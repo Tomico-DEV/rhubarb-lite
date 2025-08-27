@@ -5,6 +5,7 @@
 #include "audio/AudioClip.h"
 #include "tools/progress.h"
 #include <filesystem>
+#include <optional>
 
 #include <boost/algorithm/string/trim.hpp> 
 
@@ -13,7 +14,7 @@ extern "C" {
 }
 
 typedef std::function<lambda_unique_ptr<ps_decoder_t>(
-	boost::optional<std::string> dialog
+	std::optional<std::string> dialog
 )> decoderFactory;
 
 typedef std::function<Timeline<Phone>(
@@ -25,7 +26,7 @@ typedef std::function<Timeline<Phone>(
 
 BoundedTimeline<Phone> recognizePhones(
 	const AudioClip& inputAudioClip,
-	boost::optional<std::string> dialog,
+	std::optional<std::string> dialog,
 	decoderFactory createDecoder,
 	utteranceToPhonesFunction utteranceToPhones,
 	int maxThreadCount,

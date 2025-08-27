@@ -11,7 +11,7 @@ public:
 
 	virtual BoundedTimeline<Phone> recognizePhones(
 		const AudioClip& audioClip,
-		boost::optional<std::string> dialog,
+		std::optional<std::string> dialog,
 		int maxThreadCount,
 		ProgressSink& progressSink
 	) const = 0;

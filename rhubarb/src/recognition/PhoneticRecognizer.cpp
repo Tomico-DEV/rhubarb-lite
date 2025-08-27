@@ -8,7 +8,7 @@
 using std::runtime_error;
 using std::unique_ptr;
 using std::string;
-using boost::optional;
+using std::optional;
 
 static lambda_unique_ptr<ps_decoder_t> createDecoder(optional<std::string> dialog) {
 	UNUSED(dialog);

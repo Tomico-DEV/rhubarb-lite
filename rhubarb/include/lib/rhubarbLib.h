@@ -10,7 +10,7 @@
 
 JoiningContinuousTimeline<Shape> animateAudioClip(
 	const AudioClip& audioClip,
-	const boost::optional<std::string>& dialog,
+	const std::optional<std::string>& dialog,
 	const Recognizer& recognizer,
 	const ShapeSet& targetShapeSet,
 	int maxThreadCount,
@@ -18,7 +18,7 @@ JoiningContinuousTimeline<Shape> animateAudioClip(
 
 JoiningContinuousTimeline<Shape> animateWaveFile(
 	std::filesystem::path filePath,
-	const boost::optional<std::string>& dialog,
+	const std::optional<std::string>& dialog,
 	const Recognizer& recognizer,
 	const ShapeSet& targetShapeSet,
 	int maxThreadCount,

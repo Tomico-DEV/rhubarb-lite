@@ -23,7 +23,7 @@ using std::map;
 using std::filesystem::path;
 using std::regex;
 using std::regex_replace;
-using boost::optional;
+using std::optional;
 using std::array;
 
 bool dictionaryContains(dict_t& dictionary, const string& word) {
@@ -154,7 +154,7 @@ optional<Timeline<Phone>> getPhoneAlignment(
 	const vector<int16_t>& audioBuffer,
 	ps_decoder_t& decoder)
 {
-	if (wordIds.empty()) return boost::none;
+	if (wordIds.empty()) return std::nullopt;
 
 	// Create alignment list
 	lambda_unique_ptr<ps_alignment_t> alignment(
@@ -199,7 +199,7 @@ optional<Timeline<Phone>> getPhoneAlignment(
 
 		// End search
 		error = ps_search_finish(search.get());
-		if (error) return boost::none;
+		if (error) return std::nullopt;
 	}
 
 	// Extract phones with timestamps

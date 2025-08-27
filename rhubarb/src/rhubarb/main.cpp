@@ -264,7 +264,7 @@ int main(int platformArgc, char* platformArgv[]) {
 				inputFilePath,
 				dialogFile.isSet()
 					? readUtf8File(u8path(dialogFile.getValue()))
-					: boost::optional<string>(),
+					: std::optional<string>(),
 				*createRecognizer(recognizerType.getValue()),
 				targetShapeSet,
 				maxThreadCount.getValue(),

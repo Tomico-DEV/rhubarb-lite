@@ -4,7 +4,7 @@
 #include "animation/mouthAnimation.h"
 #include "audio/audioFileReading.h"
 
-using boost::optional;
+using std::optional;
 using std::string;
 using std::filesystem::path;
 
