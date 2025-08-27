@@ -1,5 +1,4 @@
 #include "recognition/languageModels.h"
-#include <boost/range/adaptor/map.hpp>
 #include <vector>
 #include <regex>
 #include <map>
@@ -100,9 +99,9 @@ map<Unigram, double> getUnigramBackoffWeights(
 	const double discountMass)
 {
 	map<Unigram, double> unigramBackoffWeights;
-	for (const Unigram& unigram : unigramCounts | boost::adaptors::map_keys) {
+	for (const auto& [unigram, _] : unigramCounts) {
 		double denominator = 1;
-		for (const Bigram& bigram : bigramCounts | boost::adaptors::map_keys) {
+		for (const auto& [bigram, _] : bigramCounts) {
 			if (get<0>(bigram) == unigram) {
 				denominator -= unigramProbabilities.at(get<1>(bigram));
 			}
@@ -119,9 +118,9 @@ map<Bigram, double> getBigramBackoffWeights(
 	const double discountMass)
 {
 	map<Bigram, double> bigramBackoffWeights;
-	for (const Bigram& bigram : bigramCounts | boost::adaptors::map_keys) {
+	for (const auto& [bigram, _] : bigramCounts) {
 		double denominator = 1;
-		for (const Trigram& trigram : trigramCounts | boost::adaptors::map_keys) {
+		for (const auto& [trigram, _] : trigramCounts) {
 			if (Bigram(get<0>(trigram), get<1>(trigram)) == bigram) {
 				denominator -= bigramProbabilities.at(Bigram(get<1>(trigram), get<2>(trigram)));
 			}
@@ -162,7 +161,7 @@ void createLanguageModelFile(const vector<string>& words, const path& filePath) 
 	file.setf(std::ios::fixed, std::ios::floatfield);
 	file.precision(4);
 	file << "\\1-grams:" << endl;
-	for (const Unigram& unigram : unigramCounts | boost::adaptors::map_keys) {
+	for (const auto& [unigram, _] : unigramCounts) {
 		file << log10(unigramProbabilities.at(unigram))
 			<< " " << unigram
 			<< " " << log10(unigramBackoffWeights.at(unigram)) << endl;
@@ -170,7 +169,7 @@ void createLanguageModelFile(const vector<string>& words, const path& filePath) 
 	file << endl;
 
 	file << "\\2-grams:" << endl;
-	for (const Bigram& bigram : bigramCounts | boost::adaptors::map_keys) {
+	for (const auto& [bigram, _] : bigramCounts) {
 		file << log10(bigramProbabilities.at(bigram))
 			<< " " << get<0>(bigram) << " " << get<1>(bigram)
 			<< " " << log10(bigramBackoffWeights.at(bigram)) << endl;
@@ -178,7 +177,7 @@ void createLanguageModelFile(const vector<string>& words, const path& filePath) 
 	file << endl;
 
 	file << "\\3-grams:" << endl;
-	for (const Trigram& trigram : trigramCounts | boost::adaptors::map_keys) {
+	for (const auto& [trigram, _] : trigramCounts) {
 		file << log10(trigramProbabilities.at(trigram))
 			<< " " << get<0>(trigram) << " " << get<1>(trigram) << " " << get<2>(trigram) << endl;
 	}

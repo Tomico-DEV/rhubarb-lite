@@ -292,6 +292,14 @@ target_link_libraries(vorbis
 target_compile_options(vorbis PRIVATE ${disableWarningsFlags})
 set_target_properties(vorbis PROPERTIES FOLDER lib)
 
+# ... pugixml
+add_library(pugixml
+	lib/pugixml/src/pugixml.cpp
+)
+target_include_directories(pugixml SYSTEM PUBLIC "lib/pugixml/src")
+target_compile_options(pugixml PRIVATE ${disableWarningsFlags})
+set_target_properties(pugixml PROPERTIES FOLDER lib)
+
 # Define Rhubarb libraries
 
 include_directories("src")
@@ -362,6 +370,7 @@ target_link_libraries(rhubarb-exporters
 	rhubarb-animation
 	rhubarb-core
 	rhubarb-time
+	pugixml
 )
 
 # ... rhubarb-lib
