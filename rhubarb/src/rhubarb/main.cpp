@@ -11,7 +11,6 @@
 #include "exporters/Exporter.h"
 #include "time/ContinuousTimeline.h"
 #include "tools/stringTools.h"
-#include <boost/range/adaptor/transformed.hpp>
 #include <fstream>
 #include "tools/parallel.h"
 #include "tools/exceptions.h"
@@ -23,12 +22,12 @@
 #include "exporters/XmlExporter.h"
 #include "exporters/JsonExporter.h"
 #include "animation/targetShapeSet.h"
-#include <boost/utility/in_place_factory.hpp>
 #include "tools/platformTools.h"
 #include "sinks/MachineReadableStderrSink.h"
 #include "sinks/NiceStderrSink.h"
 #include "sinks/QuietStderrSink.h"
 #include <sstream>
+#include <ranges>
 #include "rhubarb/semanticEntries.h"
 #include "rhubarb/RecognizerType.h"
 #include "recognition/PocketSphinxRecognizer.h"
@@ -44,7 +43,7 @@ using std::shared_ptr;
 using std::make_shared;
 using std::filesystem::path;
 using std::filesystem::u8path;
-using boost::adaptors::transformed;
+using std::views::transform;
 using std::optional;
 
 shared_ptr<logging::Sink> createFileSink(const path& path, logging::Level minLevel) {
@@ -364,7 +363,7 @@ int main(int platformArgc, char* platformArgv[]) {
 
 		logging::log(StartEntry(inputFilePath));
 		logging::debugFormat("Command line: {}",
-			join(args | transformed([](string arg) { return fmt::format("\"{}\"", arg); }), " "));
+			join(args | transform([](string arg) { return fmt::format("\"{}\"", arg); }), " "));
 
 		try {
 			// On progress change: Create log message
