@@ -1,6 +1,6 @@
-#include "sinks.h"
+#include "logging/sinks.h"
 #include <iostream>
-#include "Entry.h"
+#include "logging/Entry.h"
 
 using std::string;
 using std::shared_ptr;

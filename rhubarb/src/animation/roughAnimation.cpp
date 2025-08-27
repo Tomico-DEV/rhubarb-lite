@@ -1,4 +1,4 @@
-#include "roughAnimation.h"
+#include "animation/roughAnimation.h"
 #include <boost/optional.hpp>
 
 // Create timeline of shapes using a bidirectional algorithm.

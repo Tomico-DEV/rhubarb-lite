@@ -1,4 +1,4 @@
-#include "staticSegments.h"
+#include "animation/staticSegments.h"
 #include <vector>
 #include <numeric>
 #include "tools/nextCombination.h"

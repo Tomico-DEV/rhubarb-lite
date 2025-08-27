@@ -1,4 +1,4 @@
-#include "targetShapeSet.h"
+#include "animation/targetShapeSet.h"
 
 Shape convertToTargetShapeSet(Shape shape, const ShapeSet& targetShapeSet) {
 	if (targetShapeSet.find(shape) != targetShapeSet.end()) {

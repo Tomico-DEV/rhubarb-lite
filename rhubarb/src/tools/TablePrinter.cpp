@@ -1,8 +1,8 @@
-#include "TablePrinter.h"
+#include "tools/TablePrinter.h"
 #include <algorithm>
 #include <iomanip>
 #include <boost/io/ios_state.hpp>
-#include "stringTools.h"
+#include "tools/stringTools.h"
 
 using std::ostream;
 using std::initializer_list;

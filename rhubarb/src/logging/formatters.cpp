@@ -1,6 +1,6 @@
-#include "formatters.h"
+#include "logging/formatters.h"
 #include <format.h>
-#include "Entry.h"
+#include "logging/Entry.h"
 #include "tools/tools.h"
 
 using std::string;

@@ -1,4 +1,4 @@
-#include "languageModels.h"
+#include "recognition/languageModels.h"
 #include <boost/range/adaptor/map.hpp>
 #include <vector>
 #include <regex>

@@ -1,4 +1,4 @@
-#include "pocketSphinxTools.h"
+#include "recognition/pocketSphinxTools.h"
 
 #include "tools/platformTools.h"
 #include <regex>

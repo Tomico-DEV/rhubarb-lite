@@ -1,6 +1,6 @@
-#include "animationRules.h"
+#include "animation/animationRules.h"
 #include <boost/algorithm/clamp.hpp>
-#include "shapeShorthands.h"
+#include "animation/shapeShorthands.h"
 #include "tools/array.h"
 #include "time/ContinuousTimeline.h"
 

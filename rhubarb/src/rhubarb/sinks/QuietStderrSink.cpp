@@ -1,7 +1,7 @@
-#include "QuietStderrSink.h"
+#include "rhubarb/sinks/QuietStderrSink.h"
 #include "logging/sinks.h"
 #include "logging/formatters.h"
-#include "semanticEntries.h"
+#include "rhubarb/semanticEntries.h"
 #include "core/appInfo.h"
 #include <iostream>
 

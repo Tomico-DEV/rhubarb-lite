@@ -1,4 +1,4 @@
-#include "PhoneticRecognizer.h"
+#include "recognition/PhoneticRecognizer.h"
 #include "time/Timeline.h"
 #include "audio/AudioSegment.h"
 #include "audio/SampleRateConverter.h"

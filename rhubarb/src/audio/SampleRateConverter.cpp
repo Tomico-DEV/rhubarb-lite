@@ -1,5 +1,5 @@
 #include <cmath>
-#include "SampleRateConverter.h"
+#include "audio/SampleRateConverter.h"
 #include <stdexcept>
 #include <format.h>
 

@@ -1,5 +1,5 @@
-#include "MachineReadableStderrSink.h"
-#include "semanticEntries.h"
+#include "rhubarb/sinks/MachineReadableStderrSink.h"
+#include "rhubarb/semanticEntries.h"
 #include "tools/stringTools.h"
 #include <iostream>
 

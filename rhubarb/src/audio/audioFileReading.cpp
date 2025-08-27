@@ -1,8 +1,8 @@
-#include "audioFileReading.h"
+#include "audio/audioFileReading.h"
 #include <format.h>
-#include "WaveFileReader.h"
+#include "audio/WaveFileReader.h"
 #include <boost/algorithm/string.hpp>
-#include "OggVorbisFileReader.h"
+#include "audio/OggVorbisFileReader.h"
 
 using std::filesystem::path;
 using std::string;

@@ -1,5 +1,5 @@
-#include "pauseAnimation.h"
-#include "animationRules.h"
+#include "animation/pauseAnimation.h"
+#include "animation/animationRules.h"
 
 Shape getPauseShape(Shape previous, Shape next, centiseconds duration) {
 	// For very short pauses: Just hold the previous shape

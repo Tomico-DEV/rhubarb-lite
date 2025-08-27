@@ -1,4 +1,4 @@
-#include "exporterTools.h"
+#include "exporters/exporterTools.h"
 #include "animation/targetShapeSet.h"
 
 // Makes sure there is at least one mouth shape

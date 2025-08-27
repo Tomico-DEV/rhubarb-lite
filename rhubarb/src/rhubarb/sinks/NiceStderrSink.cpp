@@ -1,7 +1,7 @@
-#include "NiceStderrSink.h"
+#include "rhubarb/sinks/NiceStderrSink.h"
 #include "logging/sinks.h"
 #include "logging/formatters.h"
-#include "semanticEntries.h"
+#include "rhubarb/semanticEntries.h"
 #include <boost/utility/in_place_factory.hpp>
 
 using std::make_shared;

@@ -1,7 +1,7 @@
 #include "regex"
-#include "NiceCmdLineOutput.h"
-#include "platformTools.h"
-#include "TablePrinter.h"
+#include "tools/NiceCmdLineOutput.h"
+#include "tools/platformTools.h"
+#include "tools/TablePrinter.h"
 
 using std::string;
 using std::vector;
@@ -10,7 +10,7 @@ using std::cout;
 using std::endl;
 
 string getBinaryName() {
-	return getBinPath().filename().u8string();
+	return getBinPath().filename().string();
 }
 
 void NiceCmdLineOutput::version(CmdLineInterface& cli) {

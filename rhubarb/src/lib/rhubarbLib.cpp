@@ -1,4 +1,4 @@
-#include "rhubarbLib.h"
+#include "lib/rhubarbLib.h"
 #include "core/Phone.h"
 #include "tools/textFiles.h"
 #include "animation/mouthAnimation.h"

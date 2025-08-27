@@ -284,26 +284,16 @@ include_directories("src")
 # ... rhubarb-animation
 add_library(rhubarb-animation
 	src/animation/animationRules.cpp
-	src/animation/animationRules.h
 	src/animation/mouthAnimation.cpp
-	src/animation/mouthAnimation.h
 	src/animation/pauseAnimation.cpp
-	src/animation/pauseAnimation.h
 	src/animation/roughAnimation.cpp
-	src/animation/roughAnimation.h
 	src/animation/ShapeRule.cpp
-	src/animation/ShapeRule.h
-	src/animation/shapeShorthands.h
 	src/animation/staticSegments.cpp
-	src/animation/staticSegments.h
 	src/animation/targetShapeSet.cpp
-	src/animation/targetShapeSet.h
 	src/animation/timingOptimization.cpp
-	src/animation/timingOptimization.h
 	src/animation/tweening.cpp
-	src/animation/tweening.h
 )
-target_include_directories(rhubarb-animation PRIVATE "src/animation")
+target_include_directories(rhubarb-animation PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-animation
 	rhubarb-core
 	rhubarb-logging
@@ -313,28 +303,17 @@ target_link_libraries(rhubarb-animation
 # ... rhubarb-audio
 add_library(rhubarb-audio
 	src/audio/AudioClip.cpp
-	src/audio/AudioClip.h
 	src/audio/audioFileReading.cpp
-	src/audio/audioFileReading.h
 	src/audio/AudioSegment.cpp
-	src/audio/AudioSegment.h
 	src/audio/DcOffset.cpp
-	src/audio/DcOffset.h
-	src/audio/ioTools.h
 	src/audio/OggVorbisFileReader.cpp
-	src/audio/OggVorbisFileReader.h
 	src/audio/processing.cpp
-	src/audio/processing.h
 	src/audio/SampleRateConverter.cpp
-	src/audio/SampleRateConverter.h
 	src/audio/voiceActivityDetection.cpp
-	src/audio/voiceActivityDetection.h
 	src/audio/WaveFileReader.cpp
-	src/audio/WaveFileReader.h
 	src/audio/waveFileWriting.cpp
-	src/audio/waveFileWriting.h
 )
-target_include_directories(rhubarb-audio PRIVATE "src/audio")
+target_include_directories(rhubarb-audio PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-audio
 	webRtc
 	vorbis
@@ -347,13 +326,10 @@ target_link_libraries(rhubarb-audio
 configure_file(src/core/appInfo.cpp.in appInfo.cpp ESCAPE_QUOTES)
 add_library(rhubarb-core
 	${CMAKE_CURRENT_BINARY_DIR}/appInfo.cpp
-	src/core/appInfo.h
 	src/core/Phone.cpp
-	src/core/Phone.h
 	src/core/Shape.cpp
-	src/core/Shape.h
 )
-target_include_directories(rhubarb-core PRIVATE "src/core")
+target_include_directories(rhubarb-core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-core
 	rhubarb-tools
 )
@@ -361,18 +337,12 @@ target_link_libraries(rhubarb-core
 # ... rhubarb-exporters
 add_library(rhubarb-exporters
 	src/exporters/DatExporter.cpp
-	src/exporters/DatExporter.h
-	src/exporters/Exporter.h
 	src/exporters/exporterTools.cpp
-	src/exporters/exporterTools.h
 	src/exporters/JsonExporter.cpp
-	src/exporters/JsonExporter.h
 	src/exporters/TsvExporter.cpp
-	src/exporters/TsvExporter.h
 	src/exporters/XmlExporter.cpp
-	src/exporters/XmlExporter.h
 )
-target_include_directories(rhubarb-exporters PRIVATE "src/exporters")
+target_include_directories(rhubarb-exporters PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-exporters
 	rhubarb-animation
 	rhubarb-core
@@ -382,9 +352,8 @@ target_link_libraries(rhubarb-exporters
 # ... rhubarb-lib
 add_library(rhubarb-lib
 	src/lib/rhubarbLib.cpp
-	src/lib/rhubarbLib.h
 )
-target_include_directories(rhubarb-lib PRIVATE "src/lib")
+target_include_directories(rhubarb-lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-lib
 	rhubarb-animation
 	rhubarb-audio
@@ -397,19 +366,12 @@ target_link_libraries(rhubarb-lib
 # ... rhubarb-logging
 add_library(rhubarb-logging
 	src/logging/Entry.cpp
-	src/logging/Entry.h
-	src/logging/Formatter.h
 	src/logging/formatters.cpp
-	src/logging/formatters.h
 	src/logging/Level.cpp
-	src/logging/Level.h
 	src/logging/logging.cpp
-	src/logging/logging.h
-	src/logging/Sink.h
 	src/logging/sinks.cpp
-	src/logging/sinks.h
 )
-target_include_directories(rhubarb-logging PRIVATE "src/logging")
+target_include_directories(rhubarb-logging PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-logging
 	rhubarb-tools
 )
@@ -417,20 +379,13 @@ target_link_libraries(rhubarb-logging
 # ... rhubarb-recognition
 add_library(rhubarb-recognition
 	src/recognition/g2p.cpp
-	src/recognition/g2p.h
 	src/recognition/languageModels.cpp
-	src/recognition/languageModels.h
 	src/recognition/PhoneticRecognizer.cpp
-	src/recognition/PhoneticRecognizer.h
 	src/recognition/PocketSphinxRecognizer.cpp
-	src/recognition/PocketSphinxRecognizer.h
 	src/recognition/pocketSphinxTools.cpp
-	src/recognition/pocketSphinxTools.h
-	src/recognition/Recognizer.h
 	src/recognition/tokenization.cpp
-	src/recognition/tokenization.h
 )
-target_include_directories(rhubarb-recognition PRIVATE "src/recognition")
+target_include_directories(rhubarb-recognition PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-recognition
 	flite
 	pocketSphinx
@@ -441,17 +396,10 @@ target_link_libraries(rhubarb-recognition
 
 # ... rhubarb-time
 add_library(rhubarb-time
-	src/time/BoundedTimeline.h
 	src/time/centiseconds.cpp
-	src/time/centiseconds.h
-	src/time/ContinuousTimeline.h
-	src/time/Timed.h
-	src/time/timedLogging.h
-	src/time/Timeline.h
 	src/time/TimeRange.cpp
-	src/time/TimeRange.h
 )
-target_include_directories(rhubarb-time PRIVATE "src/time")
+target_include_directories(rhubarb-time PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-time
 	cppFormat
 	rhubarb-logging
@@ -459,36 +407,19 @@ target_link_libraries(rhubarb-time
 
 # ... rhubarb-tools
 add_library(rhubarb-tools
-	src/tools/array.h
-	src/tools/EnumConverter.h
 	src/tools/exceptions.cpp
-	src/tools/exceptions.h
 	src/tools/fileTools.cpp
-	src/tools/fileTools.h
-	src/tools/Lazy.h
-	src/tools/nextCombination.h
 	src/tools/NiceCmdLineOutput.cpp
-	src/tools/NiceCmdLineOutput.h
-	src/tools/ObjectPool.h
-	src/tools/pairs.h
-	src/tools/parallel.h
 	src/tools/platformTools.cpp
-	src/tools/platformTools.h
 	src/tools/progress.cpp
-	src/tools/progress.h
 	src/tools/ProgressBar.cpp
-	src/tools/ProgressBar.h
 	src/tools/stringTools.cpp
-	src/tools/stringTools.h
 	src/tools/TablePrinter.cpp
-	src/tools/TablePrinter.h
 	src/tools/textFiles.cpp
-	src/tools/textFiles.h
 	src/tools/tools.cpp
-	src/tools/tools.h
-	src/tools/tupleHash.h
+	src/tools/utils.cpp
 )
-target_include_directories(rhubarb-tools PRIVATE "src/tools")
+target_include_directories(rhubarb-tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-tools
 	cppFormat
 	whereami
@@ -499,20 +430,14 @@ target_link_libraries(rhubarb-tools
 # Define Rhubarb executable
 add_executable(rhubarb
 	src/rhubarb/sinks/MachineReadableStderrSink.cpp
-	src/rhubarb/sinks/MachineReadableStderrSink.h
 	src/rhubarb/sinks/NiceStderrSink.cpp
-	src/rhubarb/sinks/NiceStderrSink.h
 	src/rhubarb/sinks/QuietStderrSink.cpp
-	src/rhubarb/sinks/QuietStderrSink.h
 	src/rhubarb/main.cpp
 	src/rhubarb/ExportFormat.cpp
-	src/rhubarb/ExportFormat.h
 	src/rhubarb/RecognizerType.cpp
-	src/rhubarb/RecognizerType.h
 	src/rhubarb/semanticEntries.cpp
-	src/rhubarb/semanticEntries.h
 )
-target_include_directories(rhubarb PUBLIC "src/rhubarb")
+target_include_directories(rhubarb PUBLIC "include/rhubarb")
 target_link_libraries(rhubarb
 	rhubarb-exporters
 	rhubarb-lib

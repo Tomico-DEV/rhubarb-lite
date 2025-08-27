@@ -1,4 +1,4 @@
-#include "DatExporter.h"
+#include "exporters/DatExporter.h"
 #include "animation/targetShapeSet.h"
 #include <boost/lexical_cast.hpp>
 

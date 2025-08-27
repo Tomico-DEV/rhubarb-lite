@@ -1,5 +1,5 @@
-#include "tools.h"
-#include "platformTools.h"
+#include "tools/tools.h"
+#include "tools/platformTools.h"
 #include <format.h>
 #include <chrono>
 #include <vector>

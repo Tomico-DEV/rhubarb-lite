@@ -1,12 +1,12 @@
-#include "mouthAnimation.h"
+#include "animation/mouthAnimation.h"
 #include "time/timedLogging.h"
-#include "ShapeRule.h"
-#include "roughAnimation.h"
-#include "pauseAnimation.h"
-#include "tweening.h"
-#include "timingOptimization.h"
-#include "targetShapeSet.h"
-#include "staticSegments.h"
+#include "animation/ShapeRule.h"
+#include "animation/roughAnimation.h"
+#include "animation/pauseAnimation.h"
+#include "animation/tweening.h"
+#include "animation/timingOptimization.h"
+#include "animation/targetShapeSet.h"
+#include "animation/staticSegments.h"
 
 JoiningContinuousTimeline<Shape> animate(
 	const BoundedTimeline<Phone>& phones,

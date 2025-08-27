@@ -1,4 +1,4 @@
-#include "ShapeRule.h"
+#include "animation/ShapeRule.h"
 #include <boost/range/adaptor/transformed.hpp>
 #include <utility>
 #include "time/ContinuousTimeline.h"

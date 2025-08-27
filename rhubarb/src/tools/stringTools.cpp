@@ -1,4 +1,4 @@
-﻿#include "stringTools.h"
+﻿#include "tools/stringTools.h"
 #include <boost/algorithm/string/trim.hpp>
 #include <utf8.h>
 #include <utf8proc.h>

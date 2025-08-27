@@ -3,18 +3,18 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
-#include "platformTools.h"
+#include "tools/platformTools.h"
 #include <whereami.h>
 #include <utf8.h>
 #include <gsl_util.h>
-#include "tools.h"
+#include "tools/tools.h"
 #include <codecvt>
 #include <iostream>
 
 #ifdef _WIN32
 	#include <Windows.h>
 #endif
-#include "fileTools.h"
+#include "tools/fileTools.h"
 
 using std::filesystem::path;
 using std::string;

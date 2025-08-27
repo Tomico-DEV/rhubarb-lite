@@ -27,8 +27,8 @@
 #include "sinks/MachineReadableStderrSink.h"
 #include "sinks/NiceStderrSink.h"
 #include "sinks/QuietStderrSink.h"
-#include "semanticEntries.h"
-#include "RecognizerType.h"
+#include "rhubarb/semanticEntries.h"
+#include "rhubarb/RecognizerType.h"
 #include "recognition/PocketSphinxRecognizer.h"
 #include "recognition/PhoneticRecognizer.h"
 

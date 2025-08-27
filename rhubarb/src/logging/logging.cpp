@@ -1,7 +1,7 @@
-#include "logging.h"
+#include "logging/logging.h"
 #include "tools/tools.h"
 #include <mutex>
-#include "Entry.h"
+#include "logging/Entry.h"
 
 using namespace logging;
 using std::string;

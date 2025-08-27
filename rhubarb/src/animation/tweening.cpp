@@ -1,5 +1,5 @@
-#include "tweening.h"
-#include "animationRules.h"
+#include "animation/tweening.h"
+#include "animation/animationRules.h"
 
 JoiningContinuousTimeline<Shape> insertTweens(const JoiningContinuousTimeline<Shape>& animation) {
 	const centiseconds minTweenDuration = 4_cs;

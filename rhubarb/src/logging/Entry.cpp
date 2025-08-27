@@ -1,4 +1,4 @@
-#include "Entry.h"
+#include "logging/Entry.h"
 
 #include <thread>
 #include <mutex>

@@ -1,9 +1,9 @@
-#include "timingOptimization.h"
+#include "animation/timingOptimization.h"
 #include "time/timedLogging.h"
 #include <boost/lexical_cast.hpp>
 #include <map>
 #include <algorithm>
-#include "ShapeRule.h"
+#include "animation/ShapeRule.h"
 
 using std::string;
 using std::map;

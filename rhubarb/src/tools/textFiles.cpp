@@ -1,7 +1,7 @@
-#include "textFiles.h"
+#include "tools/textFiles.h"
 #include <format.h>
 #include <fstream>
-#include "stringTools.h"
+#include "tools/stringTools.h"
 
 using std::string;
 using std::filesystem::path;

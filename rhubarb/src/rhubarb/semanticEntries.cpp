@@ -1,4 +1,4 @@
-#include "semanticEntries.h"
+#include "rhubarb/semanticEntries.h"
 
 using logging::Level;
 using std::string;

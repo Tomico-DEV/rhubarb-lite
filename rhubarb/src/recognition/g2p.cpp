@@ -1,4 +1,4 @@
-#include <g2p.h>
+#include "recognition/g2p.h"
 #include <regex>
 #include "tools/stringTools.h"
 #include "logging/logging.h"
@@ -12,7 +12,7 @@ using std::pair;
 
 const vector<pair<wregex, wstring>>& getReplacementRules() {
 	static vector<pair<wregex, wstring>> rules {
-		#include "g2pRules.cpp"
+		#include "recognition/g2pRules.cpp"
 
 		// Turn bigrams into unigrams for easier conversion
 		{ wregex(L"ôw"), L"Ω" },

@@ -1,11 +1,11 @@
-#include "PocketSphinxRecognizer.h"
+#include "recognition/PocketSphinxRecognizer.h"
 #include <regex>
 #include <gsl_util.h>
 #include "audio/AudioSegment.h"
 #include "audio/SampleRateConverter.h"
-#include "languageModels.h"
-#include "tokenization.h"
-#include "g2p.h"
+#include "recognition/languageModels.h"
+#include "recognition/tokenization.h"
+#include "recognition/g2p.h"
 #include "time/ContinuousTimeline.h"
 #include "audio/processing.h"
 #include "time/timedLogging.h"

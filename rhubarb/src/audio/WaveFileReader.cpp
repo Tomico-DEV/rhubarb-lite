@@ -1,6 +1,6 @@
 #include <format.h>
-#include "WaveFileReader.h"
-#include "ioTools.h"
+#include "audio/WaveFileReader.h"
+#include "audio/ioTools.h"
 #include <iostream>
 #include "tools/platformTools.h"
 #include "tools/fileTools.h"

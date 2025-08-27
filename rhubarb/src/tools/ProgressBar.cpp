@@ -1,4 +1,4 @@
-#include "ProgressBar.h"
+#include "tools/ProgressBar.h"
 
 #include <algorithm>
 #include <future>

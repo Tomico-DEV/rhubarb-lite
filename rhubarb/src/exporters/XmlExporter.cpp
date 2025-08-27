@@ -1,8 +1,8 @@
-#include "XmlExporter.h"
+#include "exporters/XmlExporter.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/version.hpp>
-#include "exporterTools.h"
+#include "exporters/exporterTools.h"
 
 using std::string;
 using boost::property_tree::ptree;

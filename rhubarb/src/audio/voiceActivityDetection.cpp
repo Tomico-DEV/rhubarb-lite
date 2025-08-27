@@ -1,11 +1,11 @@
-#include "voiceActivityDetection.h"
-#include "DcOffset.h"
-#include "SampleRateConverter.h"
+#include "audio/voiceActivityDetection.h"
+#include "audio/DcOffset.h"
+#include "audio/SampleRateConverter.h"
 #include "logging/logging.h"
 #include "tools/pairs.h"
 #include <boost/range/adaptor/transformed.hpp>
 #include <webrtc/common_audio/vad/include/webrtc_vad.h>
-#include "processing.h"
+#include "audio/processing.h"
 #include <gsl_util.h>
 #include "tools/parallel.h"
 #include <webrtc/common_audio/vad/vad_core.h>
