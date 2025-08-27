@@ -107,17 +107,6 @@ std::vector<std::string> vec2strvec(const std::vector<T>& vec) {
 	return res;
 }
 
-template <typename T>
-std::string vec2str(const std::vector<T>& vec) {
-	std::ostringstream oss;
-	oss << "{";
-	for (auto elem : vec) {
-		oss << elem << ", ";
-	}
-	oss << "}";
-	return oss.str();
-}
-
 int main(int platformArgc, char* platformArgv[]) {
 	// Set up default logging so early errors are printed to stdout
 	const logging::Level defaultMinStderrLevel = logging::Level::Error;
@@ -142,7 +131,7 @@ int main(int platformArgc, char* platformArgv[]) {
 	
 	app.add_option("--logLevel", logLevelStr, "The minimum log level for log file")
 	->check(CLI::IsMember(vec2strvec<logging::Level>(logLevels)))
-	->description("Allowed modes: " + vec2str<logging::Level>(logLevels));
+	->description("The minimum log level that will be written to the log file");
 	
 	std::string logFileName;
 	auto* logFileOpt = app.add_option("--logFile", logFileName, "The log file path.");
@@ -200,14 +189,14 @@ int main(int platformArgc, char* platformArgv[]) {
 
 	app.add_option("-f,--exportFormat", exportFormatStr, "The export format.")
 	->check(CLI::IsMember(vec2strvec<ExportFormat>(exportFormats)))
-	->description("Allowed modes: " + vec2str<ExportFormat>(exportFormats));
+	->description("The export format.");
 
 	std::string recognizerTypeStr { "pocketSphinx" };
 	auto recognizerTypes = RecognizerTypeConverter::get().getValues();
 
 	app.add_option("-r,--recognizer", recognizerTypeStr, "The dialog recognizer.")
 	->check(CLI::IsMember(vec2strvec<RecognizerType>(recognizerTypes)))
-	->description("Allowed modes: " + vec2str<RecognizerType>(recognizerTypes));
+	->description("The dialog recognizer.");
 	
 	std::string inputFileName;
 	app.add_option(
