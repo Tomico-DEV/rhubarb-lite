@@ -3,8 +3,7 @@
 #include "logging/Entry.h"
 #include "logging/Sink.h"
 #include <filesystem>
-
-#include <boost/optional.hpp>
+#include <optional>
 
 // Mostly quiet output to stderr.
 // Entries are only printed if their log level at least matches the specified minimum level.
@@ -15,6 +14,6 @@ public:
 private:
 	logging::Level minLevel;
 	bool quietSoFar = true;
-	boost::optional<std::filesystem::path> inputFilePath;
+	std::optional<std::filesystem::path> inputFilePath;
 	std::shared_ptr<Sink> innerSink;
 };

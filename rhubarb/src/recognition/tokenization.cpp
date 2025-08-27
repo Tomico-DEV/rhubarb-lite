@@ -2,7 +2,7 @@
 #include "tools/tools.h"
 #include "tools/stringTools.h"
 #include <regex>
-#include <boost/optional/optional.hpp>
+#include <optional>
 
 extern "C" {
 #include <cst_utt_utils.h>
@@ -15,7 +15,7 @@ using std::string;
 using std::vector;
 using std::regex;
 using std::pair;
-using boost::optional;
+using std::optional;
 using std::function;
 
 lambda_unique_ptr<cst_voice> createDummyVoice() {
@@ -83,7 +83,7 @@ optional<string> findSimilarDictionaryWord(
 		}
 	}
 
-	return boost::none;
+	return std::nullopt;
 }
 
 vector<string> tokenizeText(
