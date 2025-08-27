@@ -1,40 +1,28 @@
 #include "exporters/XmlExporter.h"
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/version.hpp>
 #include "exporters/exporterTools.h"
 
-using std::string;
-using boost::property_tree::ptree;
+#include "tools/utils.h"
+#include "pugixml.hpp"
+
+using namespace pugi;
 
 void XmlExporter::exportAnimation(const ExporterInput& input, std::ostream& outputStream) {
-	ptree tree;
+    xml_document doc;
 
-	// Add metadata
-	tree.put("rhubarbResult.metadata.soundFile", absolute(input.inputFilePath).string());
-	tree.put(
-		"rhubarbResult.metadata.duration",
-		formatDuration(input.animation.getRange().getDuration())
-	);
+    auto root = doc.append_child("rhubarbResult");
 
-	// Add mouth cues
-	for (auto& timedShape : dummyShapeIfEmpty(input.animation, input.targetShapeSet)) {
-		ptree& mouthCueElement = tree.add(
-			"rhubarbResult.mouthCues.mouthCue",
-			timedShape.getValue()
-		);
-		mouthCueElement.put("<xmlattr>.start", formatDuration(timedShape.getStart()));
-		mouthCueElement.put("<xmlattr>.end", formatDuration(timedShape.getEnd()));
-	}
+    auto metadata = root.append_child("metadata");
+    metadata.append_child("soundFile").text().set(absolute(input.inputFilePath).string().c_str());
+    metadata.append_child("duration").text().set(formatDuration(input.animation.getRange().getDuration()).c_str());
 
-#ifndef BOOST_VERSION	//present in version.hpp
-	#error "Could not detect Boost version."
-#endif
+    auto mouthCues = root.append_child("mouthCues");
 
-#if BOOST_VERSION < 105600 // Support legacy syntax
-	using writer_setting = boost::property_tree::xml_writer_settings<char>;
-#else
-	using writer_setting = boost::property_tree::xml_writer_settings<string>;
-#endif
-	write_xml(outputStream, tree, writer_setting(' ', 2));
+    for (auto& timedShape : dummyShapeIfEmpty(input.animation, input.targetShapeSet)) {
+        auto mouthCue = mouthCues.append_child("mouthCue");
+        mouthCue.text().set(lexical_cast(timedShape.getValue()).c_str());
+        mouthCue.append_attribute("start") = formatDuration(timedShape.getStart()).c_str();
+        mouthCue.append_attribute("end") = formatDuration(timedShape.getEnd()).c_str();
+    }
+
+    doc.save(outputStream, "  ");  // pretty-print with 2 spaces
 }

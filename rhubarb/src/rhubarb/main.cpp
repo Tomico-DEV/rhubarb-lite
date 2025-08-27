@@ -164,12 +164,6 @@ int main(int platformArgc, char* platformArgv[]) {
 	->check(CLI::IsMember(vec2strvec<logging::Level>(logLevels)))
 	->description("Allowed modes: " + vec2str<logging::Level>(logLevels));
 	
-	auto maybeLevel = logging::LevelConverter::get().tryParse(logLevelStr);
-	if (!maybeLevel.has_value()) {
-		throw CLI::ValidationError("Invalid log level: " + logLevelStr);
-	}
-
-	logging::Level logLevel = maybeLevel.value();
 	/*
 	tclap::ValueArg<string> logFileName(
 		"", "logFile", "The log file path.",
@@ -281,19 +275,13 @@ int main(int platformArgc, char* platformArgv[]) {
 		false, ExportFormat::Tsv, &exportFormatConstraint, cmd
 	);
 	*/
-	std::string exportFormatStr { "Tsv" };
+	std::string exportFormatStr { "tsv" };
 	auto exportFormats = vector<ExportFormat>( ExportFormatConverter::get().getValues() );
 
 	app.add_option("-f,--exportFormat", exportFormatStr, "The export format.")
 	->check(CLI::IsMember(vec2strvec<ExportFormat>(exportFormats)))
 	->description("Allowed modes: " + vec2str<ExportFormat>(exportFormats));
-	
-	auto maybeFormat = ExportFormatConverter::get().tryParse(exportFormatStr);
-	if (!maybeFormat.has_value()) {
-		throw CLI::ValidationError("Invalid export format: " + logLevelStr);
-	}
-	
-	ExportFormat exportFormat = maybeFormat.value();
+
 	
 	/*
 	auto recognizerTypes = vector<RecognizerType>(RecognizerTypeConverter::get().getValues());
@@ -310,14 +298,6 @@ int main(int platformArgc, char* platformArgv[]) {
 	->check(CLI::IsMember(vec2strvec<RecognizerType>(recognizerTypes)))
 	->description("Allowed modes: " + vec2str<RecognizerType>(recognizerTypes));
 	
-
-	auto maybeRecogType = RecognizerTypeConverter::get().tryParse(recognizerTypeStr);
-	if (!maybeLevel.has_value()) {
-		throw CLI::ValidationError("Invalid recognizer: " + recognizerTypeStr);
-	}
-
-	RecognizerType recognizerType = maybeRecogType.value();
-	
 	std::string inputFileName;
 	app.add_option(
 		"inputFile", inputFileName, 
@@ -329,6 +309,28 @@ int main(int platformArgc, char* platformArgv[]) {
 		
 		// Parse command line
 		CLI11_PARSE(app, platformArgc, platformArgv);
+
+		auto maybeLevel = logging::LevelConverter::get().tryParse(logLevelStr);
+		if (!maybeLevel.has_value()) {
+			throw CLI::ValidationError("Invalid log level: " + logLevelStr);
+		}
+
+		logging::Level logLevel = maybeLevel.value();
+		// Convert values
+		auto maybeFormat = ExportFormatConverter::get().tryParse(exportFormatStr);
+		if (!maybeFormat.has_value()) {
+			throw CLI::ValidationError("Invalid export format: " + exportFormatStr);
+		}
+		
+		ExportFormat exportFormat = maybeFormat.value();
+
+		auto maybeRecogType = RecognizerTypeConverter::get().tryParse(recognizerTypeStr);
+		if (!maybeLevel.has_value()) {
+			throw CLI::ValidationError("Invalid recognizer: " + recognizerTypeStr);
+		}
+
+		RecognizerType recognizerType = maybeRecogType.value();
+
 		
 		// Set up logging
 		// ... to stderr
