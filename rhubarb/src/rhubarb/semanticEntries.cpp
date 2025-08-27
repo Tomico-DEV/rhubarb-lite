@@ -8,7 +8,7 @@ SemanticEntry::SemanticEntry(Level level, const string& message) :
 {}
 
 StartEntry::StartEntry(const std::filesystem::path& inputFilePath) :
-	SemanticEntry(Level::Info, fmt::format("Application startup. Input file: {}.", inputFilePath.u8string())),
+	SemanticEntry(Level::Info, fmt::format("Application startup. Input file: {}.", inputFilePath.string())),
 	inputFilePath(inputFilePath)
 {}
 

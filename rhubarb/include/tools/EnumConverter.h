@@ -9,6 +9,7 @@
 #include <string>
 #include <stdexcept>
 #include <fmt/core.h>
+#include <fmt/format.h>
 #include <sstream> 
 
 template<typename TEnum>

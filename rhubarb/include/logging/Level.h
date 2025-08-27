@@ -30,7 +30,7 @@ namespace logging {
 
 template <>
 struct fmt::formatter<logging::Level> : fmt::formatter<std::string> {
-	auto format(const logging::Level& lvl, format_context& ctx) const
+	inline auto format(const logging::Level& lvl, format_context& ctx) const
 	-> format_context::iterator
 	{
 		std::ostringstream oss;

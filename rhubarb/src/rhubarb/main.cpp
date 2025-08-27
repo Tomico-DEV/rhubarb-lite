@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fmt/core.h>
-#include <tclap/CmdLine.h>
+//#include <tclap/CmdLine.h>
+#include <CLI/CLI.hpp>
 #include "core/appInfo.h"
-#include "tools/NiceCmdLineOutput.h"
+// #include "tools/NiceCmdLineOutput.h"
 #include "logging/logging.h"
 #include "logging/sinks.h"
 #include "logging/formatters.h"
@@ -27,6 +28,7 @@
 #include "sinks/MachineReadableStderrSink.h"
 #include "sinks/NiceStderrSink.h"
 #include "sinks/QuietStderrSink.h"
+#include <sstream>
 #include "rhubarb/semanticEntries.h"
 #include "rhubarb/RecognizerType.h"
 #include "recognition/PocketSphinxRecognizer.h"
@@ -43,27 +45,7 @@ using std::make_shared;
 using std::filesystem::path;
 using std::filesystem::u8path;
 using boost::adaptors::transformed;
-using boost::optional;
-
-namespace tclap = TCLAP;
-
-// Tell TCLAP how to handle our types
-namespace TCLAP {
-	template<>
-	struct ArgTraits<logging::Level> {
-		typedef ValueLike ValueCategory;
-	};
-
-	template<>
-	struct ArgTraits<ExportFormat> {
-		typedef ValueLike ValueCategory;
-	};
-
-	template<>
-	struct ArgTraits<RecognizerType> {
-		typedef ValueLike ValueCategory;
-	};
-}
+using std::optional;
 
 shared_ptr<logging::Sink> createFileSink(const path& path, logging::Level minLevel) {
 	auto file = make_shared<std::ofstream>();
@@ -117,6 +99,28 @@ ShapeSet getTargetShapeSet(const string& extendedShapesString) {
 	return result;
 }
 
+template <typename T>
+std::vector<std::string> vec2strvec(const std::vector<T>& vec) {
+	std::vector<std::string> res;
+	for (auto elem : vec) {
+		std::ostringstream oss;
+		oss << elem;
+		res.push_back(oss.str());
+	}
+	return res;
+}
+
+template <typename T>
+std::string vec2str(const std::vector<T>& vec) {
+	std::ostringstream oss;
+	oss << "{";
+	for (auto elem : vec) {
+		oss << elem << ", ";
+	}
+	oss << "}";
+	return oss.str();
+}
+
 int main(int platformArgc, char* platformArgv[]) {
 	// Set up default logging so early errors are printed to stdout
 	const logging::Level defaultMinStderrLevel = logging::Level::Error;
@@ -130,11 +134,14 @@ int main(int platformArgc, char* platformArgv[]) {
 	const vector<string> args = argsToUtf8(platformArgc, platformArgv);
 
 	// Define command-line parameters
-	const char argumentValueSeparator = ' ';
-	tclap::CmdLine cmd(appName, argumentValueSeparator, appVersion);
-	cmd.setExceptionHandling(false);
-	cmd.setOutput(new NiceCmdLineOutput());
+	// const char argumentValueSeparator = ' ';
+	//tclap::CmdLine cmd(appName, argumentValueSeparator, appVersion);
+	//cmd.setExceptionHandling(false);
+	//cmd.setOutput(new NiceCmdLineOutput());
+	CLI::App app {appName, "placeholder"};
+	app.set_version_flag("--version", appVersion);
 
+	/*
 	tclap::ValueArg<string> outputFileName(
 		"o", "output", "The output file path.",
 		false, string(), "string", cmd
@@ -146,163 +153,252 @@ int main(int platformArgc, char* platformArgv[]) {
 		"", "logLevel", "The minimum log level that will be written to the log file",
 		false, logging::Level::Debug, &logLevelConstraint, cmd
 	);
+	*/
+	std::string outputFileName;
+	auto* outputFileOpt = app.add_option("-o,--output", outputFileName, "The output file path.");
+	
+	std::string logLevelStr { "Debug" };
+	auto logLevels = vector<logging::Level>( logging::LevelConverter::get().getValues() );
+	
+	app.add_option("--logLevel", logLevelStr, "The minimum log level for log file")
+	->check(CLI::IsMember(vec2strvec<logging::Level>(logLevels)))
+	->description("Allowed modes: " + vec2str<logging::Level>(logLevels));
+	
+	auto maybeLevel = logging::LevelConverter::get().tryParse(logLevelStr);
+	if (!maybeLevel.has_value()) {
+		throw CLI::ValidationError("Invalid log level: " + logLevelStr);
+	}
 
+	logging::Level logLevel = maybeLevel.value();
+	/*
 	tclap::ValueArg<string> logFileName(
 		"", "logFile", "The log file path.",
 		false, string(), "string", cmd
-	);
+		);
 	tclap::ValueArg<logging::Level> consoleLevel(
-		"", "consoleLevel", "The minimum log level that will be printed on the console (stderr)",
-		false, defaultMinStderrLevel, &logLevelConstraint, cmd
+	"", "consoleLevel", "The minimum log level that will be printed on the console (stderr)",
+	false, defaultMinStderrLevel, &logLevelConstraint, cmd
+	);
+	*/
+
+	std::string logFileName;
+	auto* logFileOpt = app.add_option("--logFile", logFileName, "The log file path.");
+	
+	logging::Level consoleLevel = defaultMinStderrLevel;
+	app.add_option(
+		"--consoleLevel", consoleLevel, 
+		"The minimum log level that will be printed on the console (stderr)"
 	);
 
+	/*
 	tclap::SwitchArg machineReadableMode(
 		"", "machineReadable", "Formats all output to stderr in a structured JSON format.",
 		cmd, false
 	);
-
+	*/
+	
+	bool machineReadableMode = false;
+	app.add_flag(
+		"--machineReadable", machineReadableMode,
+		"Formats all output to stderr in a structured JSON format."
+	);
+	
+	/*
 	tclap::SwitchArg quietMode(
 		"q", "quiet", "Suppresses all output to stderr except for warnings and error messages.",
 		cmd, false
 	);
+	*/
 
+	bool quietMode = false;
+	app.add_flag(
+		"-q,--quiet", quietMode,
+		"Suppresses all output to stderr except for warnings and error messages."
+	);
+
+	/*
 	tclap::ValueArg<int> maxThreadCount(
 		"", "threads", "The maximum number of worker threads to use.",
 		false, getProcessorCoreCount(), "number", cmd
 	);
+	*/
 
+	int maxThreadCount = getProcessorCoreCount();
+	app.add_option(
+		"--threads", maxThreadCount,
+		"The maximum number of worker threads to use."
+	);
+
+	/*
 	tclap::ValueArg<string> extendedShapes(
 		"", "extendedShapes", "All extended, optional shapes to use.",
 		false, "GHX", "string", cmd
 	);
-
+	*/
+	std::string extendedShapes { "GHX" };
+	app.add_option(
+		"--extendedShapes", extendedShapes,
+		"All extended, optional shapes to use."
+	);
+	/*
 	tclap::ValueArg<string> dialogFile(
 		"d", "dialogFile", "A file containing the text of the dialog.",
 		false, string(), "string", cmd
 	);
-
+	*/
+	std::string dialogFile;
+	auto* dialogOpt = app.add_option(
+		"-d,--dialogFile", dialogFile,
+		"A file containing the text of the dialog."
+	);
+	/*
 	tclap::SwitchArg datUsePrestonBlair(
 		"", "datUsePrestonBlair", "Only for dat exporter: uses the Preston Blair mouth shape names.",
 		cmd, false
 	);
-
+	*/
+	bool datUsePrestonBlair = false;
+	app.add_option(
+		"--datUsePrestonBlair", datUsePrestonBlair,
+		"Only for dat exporter: uses the Preston Blair mouth shape names."
+	);
+	/*
 	tclap::ValueArg<double> datFrameRate(
 		"", "datFrameRate", "Only for dat exporter: the desired frame rate.",
 		false, 24.0, "number", cmd
 	);
-
+	*/
+	double datFrameRate = 24.0;
+	app.add_option(
+		"--datFrameRate", datFrameRate,
+		"Only for dat exporter: the desired frame rate."
+	);
+	/*
 	auto exportFormats = vector<ExportFormat>(ExportFormatConverter::get().getValues());
 	tclap::ValuesConstraint<ExportFormat> exportFormatConstraint(exportFormats);
 	tclap::ValueArg<ExportFormat> exportFormat(
 		"f", "exportFormat", "The export format.",
 		false, ExportFormat::Tsv, &exportFormatConstraint, cmd
 	);
+	*/
+	std::string exportFormatStr { "Tsv" };
+	auto exportFormats = vector<ExportFormat>( ExportFormatConverter::get().getValues() );
 
+	app.add_option("-f,--exportFormat", exportFormatStr, "The export format.")
+	->check(CLI::IsMember(vec2strvec<ExportFormat>(exportFormats)))
+	->description("Allowed modes: " + vec2str<ExportFormat>(exportFormats));
+	
+	auto maybeFormat = ExportFormatConverter::get().tryParse(exportFormatStr);
+	if (!maybeFormat.has_value()) {
+		throw CLI::ValidationError("Invalid export format: " + logLevelStr);
+	}
+	
+	ExportFormat exportFormat = maybeFormat.value();
+	
+	/*
 	auto recognizerTypes = vector<RecognizerType>(RecognizerTypeConverter::get().getValues());
 	tclap::ValuesConstraint<RecognizerType> recognizerConstraint(recognizerTypes);
 	tclap::ValueArg<RecognizerType> recognizerType(
 		"r", "recognizer", "The dialog recognizer.",
 		false, RecognizerType::PocketSphinx, &recognizerConstraint, cmd
 	);
+	*/
+	std::string recognizerTypeStr { "pocketSphinx" };
+	auto recognizerTypes = RecognizerTypeConverter::get().getValues();
 
-	tclap::UnlabeledValueArg<string> inputFileName(
-		"inputFile", "The input file. Must be a sound file in WAVE format.",
-		true, "", "string", cmd
+	app.add_option("-r,--recognizer", recognizerTypeStr, "The dialog recognizer.")
+	->check(CLI::IsMember(vec2strvec<RecognizerType>(recognizerTypes)))
+	->description("Allowed modes: " + vec2str<RecognizerType>(recognizerTypes));
+	
+
+	auto maybeRecogType = RecognizerTypeConverter::get().tryParse(recognizerTypeStr);
+	if (!maybeLevel.has_value()) {
+		throw CLI::ValidationError("Invalid recognizer: " + recognizerTypeStr);
+	}
+
+	RecognizerType recognizerType = maybeRecogType.value();
+	
+	std::string inputFileName;
+	app.add_option(
+		"inputFile", inputFileName, 
+		"The input file. Must be a sound file in WAVE format."
+	)
+	->required();
+	
+	// Parse command line
+	CLI11_PARSE(app, platformArgc, platformArgv);
+	
+
+	// Set up logging
+	// ... to stderr
+	if (quietMode) {
+		logging::addSink(make_shared<QuietStderrSink>(consoleLevel));
+	} else if (machineReadableMode) {
+		logging::addSink(make_shared<MachineReadableStderrSink>(consoleLevel));
+	} else {
+		logging::addSink(make_shared<NiceStderrSink>(consoleLevel));
+	}
+	logging::removeSink(defaultSink);
+	// ... to log file
+	if (logFileOpt) {
+		auto fileSink = createFileSink(logFileName, logLevel);
+		logging::addSink(fileSink);
+	}
+
+	// Validate and transform command line arguments
+	if (maxThreadCount < 1) {
+		throw std::runtime_error("Thread count must be 1 or higher.");
+	}
+	path inputFilePath { inputFileName };
+	ShapeSet targetShapeSet = getTargetShapeSet(extendedShapes);
+
+	unique_ptr<Exporter> exporter = createExporter(
+		exportFormat,
+		targetShapeSet,
+		datFrameRate,
+		datUsePrestonBlair
 	);
 
+	logging::log(StartEntry(inputFilePath));
+	logging::debugFormat("Command line: {}",
+		join(args | transformed([](string arg) { return fmt::format("\"{}\"", arg); }), " "));
+
 	try {
-		// Parse command line
-		{
-			// TCLAP mutates the function argument! Pass a copy.
-			vector<string> argsCopy(args);
-			cmd.parse(argsCopy);
-		}
+		// On progress change: Create log message
+		ProgressForwarder progressSink([](double progress) {
+			logging::log(ProgressEntry(progress));
+		});
 
-		// Set up logging
-		// ... to stderr
-		if (quietMode.getValue()) {
-			logging::addSink(make_shared<QuietStderrSink>(consoleLevel.getValue()));
-		} else if (machineReadableMode.getValue()) {
-			logging::addSink(make_shared<MachineReadableStderrSink>(consoleLevel.getValue()));
-		} else {
-			logging::addSink(make_shared<NiceStderrSink>(consoleLevel.getValue()));
-		}
-		logging::removeSink(defaultSink);
-		// ... to log file
-		if (logFileName.isSet()) {
-			auto fileSink = createFileSink(u8path(logFileName.getValue()), logLevel.getValue());
-			logging::addSink(fileSink);
-		}
-
-		// Validate and transform command line arguments
-		if (maxThreadCount.getValue() < 1) {
-			throw std::runtime_error("Thread count must be 1 or higher.");
-		}
-		path inputFilePath = u8path(inputFileName.getValue());
-		ShapeSet targetShapeSet = getTargetShapeSet(extendedShapes.getValue());
-
-		unique_ptr<Exporter> exporter = createExporter(
-			exportFormat.getValue(),
+		// Animate the recording
+		logging::info("Starting animation.");
+		JoiningContinuousTimeline<Shape> animation = animateWaveFile(
+			inputFilePath,
+			static_cast<bool>(dialogOpt)
+				? readUtf8File(dialogFile)
+				: std::optional<string>(),
+			*createRecognizer(recognizerType),
 			targetShapeSet,
-			datFrameRate.getValue(),
-			datUsePrestonBlair.getValue()
-		);
+			maxThreadCount,
+			progressSink);
+		logging::info("Done animating.");
 
-		logging::log(StartEntry(inputFilePath));
-		logging::debugFormat("Command line: {}",
-			join(args | transformed([](string arg) { return fmt::format("\"{}\"", arg); }), " "));
-
-		try {
-			// On progress change: Create log message
-			ProgressForwarder progressSink([](double progress) {
-				logging::log(ProgressEntry(progress));
-			});
-
-			// Animate the recording
-			logging::info("Starting animation.");
-			JoiningContinuousTimeline<Shape> animation = animateWaveFile(
-				inputFilePath,
-				dialogFile.isSet()
-					? readUtf8File(u8path(dialogFile.getValue()))
-					: std::optional<string>(),
-				*createRecognizer(recognizerType.getValue()),
-				targetShapeSet,
-				maxThreadCount.getValue(),
-				progressSink);
-			logging::info("Done animating.");
-
-			// Export animation
-			optional<std::ofstream> outputFile;
-			if (outputFileName.isSet()) {
-				outputFile = boost::in_place(u8path(outputFileName.getValue()));
-				outputFile->exceptions(std::ifstream::failbit | std::ifstream::badbit);
-			}
-			ExporterInput exporterInput = ExporterInput(inputFilePath, animation, targetShapeSet);
-			logging::info("Starting export.");
-			exporter->exportAnimation(exporterInput, outputFile ? *outputFile : std::cout);
-			logging::info("Done exporting.");
-
-			logging::log(SuccessEntry());
-		} catch (...) {
-			std::throw_with_nested(
-				std::runtime_error(fmt::format("Error processing file {}.", inputFilePath.u8string()))
-			);
+		// Export animation
+		optional<std::ofstream> outputFile;
+		if (outputFileOpt) {
+			outputFile.emplace(path { outputFileName });
+			outputFile->exceptions(std::ifstream::failbit | std::ifstream::badbit);
 		}
+		ExporterInput exporterInput = ExporterInput(inputFilePath, animation, targetShapeSet);
+		logging::info("Starting export.");
+		exporter->exportAnimation(exporterInput, outputFile ? *outputFile : std::cout);
+		logging::info("Done exporting.");
 
-		return 0;
-	} catch (tclap::ArgException& e) {
-		// Error parsing command-line args.
-		cmd.getOutput()->failure(cmd, e);
-		logging::log(FailureEntry("Invalid command line."));
-		return 1;
-	} catch (tclap::ExitException&) {
-		// A built-in TCLAP command (like --help) has finished. Exit application.
-		logging::info("Exiting application after help-like command.");
-		return 0;
-	} catch (const exception& e) {
-		// Generic error
-		string message = getMessage(e);
-		logging::log(FailureEntry(message));
-		return 1;
+		logging::log(SuccessEntry());
+	} catch (...) {
+		std::throw_with_nested(
+			std::runtime_error(fmt::format("Error processing file {}.", inputFilePath.string()))
+		);
 	}
+
+	return 0;
 }

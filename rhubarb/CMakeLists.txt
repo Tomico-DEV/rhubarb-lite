@@ -97,7 +97,16 @@ target_compile_definitions(pocketSphinx PUBLIC __POCKETSPHINX_EXPORT_H__=1 POCKE
 set_target_properties(pocketSphinx PROPERTIES FOLDER lib)
 
 # ... TCLAP
-include_directories(SYSTEM "lib/tclap-1.2.1/include")
+# include_directories(SYSTEM "lib/tclap-1.2.1/include")
+
+# ... CLI11, replacing TCLAP
+FetchContent_Declare(
+  CLI11
+  GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
+  GIT_TAG v2.5.0  
+)
+FetchContent_MakeAvailable(CLI11)
+
 
 # ... Google Test
 set(INSTALL_GTEST OFF) # Prevent library files from ending up in our artifacts
@@ -415,7 +424,7 @@ target_link_libraries(rhubarb-time
 add_library(rhubarb-tools
 	src/tools/exceptions.cpp
 	src/tools/fileTools.cpp
-	src/tools/NiceCmdLineOutput.cpp
+	# src/tools/NiceCmdLineOutput.cpp
 	src/tools/platformTools.cpp
 	src/tools/progress.cpp
 	src/tools/ProgressBar.cpp
@@ -427,6 +436,7 @@ add_library(rhubarb-tools
 target_include_directories(rhubarb-tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-tools
 	fmt::fmt
+	CLI11::CLI11
 	whereami
 	utfcpp
 	utf8proc
@@ -446,6 +456,7 @@ target_include_directories(rhubarb PUBLIC "include/rhubarb")
 target_link_libraries(rhubarb
 	rhubarb-exporters
 	rhubarb-lib
+	CLI11::CLI11
 )
 target_compile_options(rhubarb PUBLIC ${enableWarningsFlags})
 
