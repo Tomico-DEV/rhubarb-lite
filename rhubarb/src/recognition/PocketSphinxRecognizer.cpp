@@ -304,9 +304,6 @@ static Timeline<Phone> utteranceToPhones(
 	}
 
 	// Align the words' phones with speech
-#if BOOST_VERSION < 105600 // Support legacy syntax
-#define value_or get_value_or
-#endif
 	Timeline<Phone> utterancePhones = getPhoneAlignment(wordIds, audioBuffer, decoder)
 		.value_or(ContinuousTimeline<Phone>(clipSegment->getTruncatedRange(), Phone::Noise));
 	alignmentProgressSink.reportProgress(1.0);

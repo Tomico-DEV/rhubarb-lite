@@ -1,13 +1,12 @@
 #include <gmock/gmock.h>
 #include "time/Timeline.h"
 #include <functional>
-#include <boost/optional/optional_io.hpp>
+#include <optional>
 
 using namespace testing;
 using std::vector;
-using boost::optional;
+using std::optional;
 using std::initializer_list;
-using boost::none;
 
 TEST(Timeline, constructors_initializeState) {
 	auto args = {
@@ -201,7 +200,7 @@ TEST(Timeline, clear) {
 
 void testSetter(const std::function<void(const Timed<int>&, Timeline<int>&)>& set) {
 	Timeline<int> timeline;
-	vector<optional<int>> expectedValues(20, none);
+	vector<optional<int>> expectedValues(20, std::nullopt);
 	auto newElements = {
 		Timed<int>(1_cs, 2_cs, 4),
 		Timed<int>(3_cs, 6_cs, 4),
@@ -237,7 +236,7 @@ void testSetter(const std::function<void(const Timed<int>&, Timeline<int>&)>& se
 		// Check timeline via indexer
 		for (centiseconds t = 0_cs; t < 10_cs; ++t) {
 			optional<int> actual = timeline[t];
-			EXPECT_EQ(expectedValues[t.count()], actual ? optional<int>(*actual) : none);
+			EXPECT_EQ(expectedValues[t.count()], actual ? optional<int>(*actual) : std::nullopt);
 		}
 
 		// Check timeline via iterators
@@ -273,15 +272,15 @@ TEST(Timeline, set) {
 
 TEST(Timeline, indexer_get) {
 	Timeline<int> timeline { { 1_cs, 2_cs, 1 }, { 2_cs, 4_cs, 2 }, { 6_cs, 9_cs, 3 } };
-	vector<optional<int>> expectedValues { none, 1, 2, 2, none, none, 3, 3, 3 };
+	vector<optional<int>> expectedValues { std::nullopt, 1, 2, 2, std::nullopt, std::nullopt, 3, 3, 3 };
 	for (centiseconds t = 0_cs; t < 9_cs; ++t) {
 		{
 			optional<int> actual = timeline[t];
-			EXPECT_EQ(expectedValues[t.count()], actual ? optional<int>(*actual) : none);
+			EXPECT_EQ(expectedValues[t.count()], actual ? optional<int>(*actual) : std::nullopt);
 		}
 		{
 			optional<int> actual = timeline[t];
-			EXPECT_EQ(expectedValues[t.count()], actual ? optional<int>(*actual) : none);
+			EXPECT_EQ(expectedValues[t.count()], actual ? optional<int>(*actual) : std::nullopt);
 		}
 		if (expectedValues[t.count()]) {
 			{
