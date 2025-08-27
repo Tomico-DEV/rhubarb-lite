@@ -1,10 +1,10 @@
 #include "animation/ShapeRule.h"
-#include <boost/range/adaptor/transformed.hpp>
+#include <ranges>
 #include <utility>
 #include "time/ContinuousTimeline.h"
 
 using std::optional;
-using boost::adaptors::transformed;
+using std::views::transform;
 
 template<typename T, bool AutoJoin>
 ContinuousTimeline<optional<T>, AutoJoin> boundedTimelinetoContinuousOptional(
@@ -13,7 +13,7 @@ ContinuousTimeline<optional<T>, AutoJoin> boundedTimelinetoContinuousOptional(
 	return {
 		timeline.getRange(),
 		std::nullopt,
-		timeline | transformed([](const Timed<T>& timedValue) {
+		timeline | transform([](const Timed<T>& timedValue) {
 			return Timed<optional<T>>(timedValue.getTimeRange(), timedValue.getValue());
 		})
 	};
