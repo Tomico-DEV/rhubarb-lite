@@ -33,3 +33,10 @@ inline std::string lexical_cast(const T& value)
     return oss.str();
 }
 
+inline void trim_char(std::string& s, char ch) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+        [ch](char c){ return c != ch; }));
+    s.erase(std::find_if(s.rbegin(), s.rend(),
+        [ch](char c){ return c != ch; }).base(), s.end());
+}
+

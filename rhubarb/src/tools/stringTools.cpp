@@ -1,5 +1,5 @@
 ﻿#include "tools/stringTools.h"
-#include <boost/algorithm/string/trim.hpp>
+#include "tools/utils.h"
 #include <utf8.h>
 #include <utf8proc.h>
 #include <regex>
@@ -23,7 +23,7 @@ vector<string> splitIntoLines(const string& s) {
 		if (p == end || *p == '\n') {
 			string line(lineBegin, p);
 			// Trim \r characters
-			boost::algorithm::trim_if(line, [](char c) { return c == '\r'; });
+			trim_char(line, '\r');
 			lines.push_back(line);
 			lineBegin = p + 1;
 		}
@@ -62,7 +62,7 @@ vector<string> wrapSingleLineString(const string& s, int lineLength, int hanging
 
 			// Add trimmed line to list
 			string line(lineBegin, lineEnd);
-			boost::algorithm::trim_right(line);
+			rtrim(line);
 			lines.push_back(string(currentIndent, ' ') + line);
 
 			// Resume after the last line, skipping spaces
