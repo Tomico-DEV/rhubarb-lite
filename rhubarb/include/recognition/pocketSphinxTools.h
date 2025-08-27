@@ -7,7 +7,7 @@
 #include <filesystem>
 #include <optional>
 
-#include <boost/algorithm/string/trim.hpp> 
+#include "tools/utils.h"
 
 extern "C" {
 #include <pocketsphinx.h>
