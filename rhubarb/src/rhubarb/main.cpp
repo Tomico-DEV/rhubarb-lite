@@ -325,80 +325,86 @@ int main(int platformArgc, char* platformArgv[]) {
 	)
 	->required();
 	
-	// Parse command line
-	CLI11_PARSE(app, platformArgc, platformArgv);
-	
-
-	// Set up logging
-	// ... to stderr
-	if (quietMode) {
-		logging::addSink(make_shared<QuietStderrSink>(consoleLevel));
-	} else if (machineReadableMode) {
-		logging::addSink(make_shared<MachineReadableStderrSink>(consoleLevel));
-	} else {
-		logging::addSink(make_shared<NiceStderrSink>(consoleLevel));
-	}
-	logging::removeSink(defaultSink);
-	// ... to log file
-	if (logFileOpt) {
-		auto fileSink = createFileSink(logFileName, logLevel);
-		logging::addSink(fileSink);
-	}
-
-	// Validate and transform command line arguments
-	if (maxThreadCount < 1) {
-		throw std::runtime_error("Thread count must be 1 or higher.");
-	}
-	path inputFilePath { inputFileName };
-	ShapeSet targetShapeSet = getTargetShapeSet(extendedShapes);
-
-	unique_ptr<Exporter> exporter = createExporter(
-		exportFormat,
-		targetShapeSet,
-		datFrameRate,
-		datUsePrestonBlair
-	);
-
-	logging::log(StartEntry(inputFilePath));
-	logging::debugFormat("Command line: {}",
-		join(args | transformed([](string arg) { return fmt::format("\"{}\"", arg); }), " "));
-
 	try {
-		// On progress change: Create log message
-		ProgressForwarder progressSink([](double progress) {
-			logging::log(ProgressEntry(progress));
-		});
-
-		// Animate the recording
-		logging::info("Starting animation.");
-		JoiningContinuousTimeline<Shape> animation = animateWaveFile(
-			inputFilePath,
-			static_cast<bool>(dialogOpt)
-				? readUtf8File(dialogFile)
-				: std::optional<string>(),
-			*createRecognizer(recognizerType),
-			targetShapeSet,
-			maxThreadCount,
-			progressSink);
-		logging::info("Done animating.");
-
-		// Export animation
-		optional<std::ofstream> outputFile;
-		if (outputFileOpt) {
-			outputFile.emplace(path { outputFileName });
-			outputFile->exceptions(std::ifstream::failbit | std::ifstream::badbit);
+		
+		// Parse command line
+		CLI11_PARSE(app, platformArgc, platformArgv);
+		
+		// Set up logging
+		// ... to stderr
+		if (quietMode) {
+			logging::addSink(make_shared<QuietStderrSink>(consoleLevel));
+		} else if (machineReadableMode) {
+			logging::addSink(make_shared<MachineReadableStderrSink>(consoleLevel));
+		} else {
+			logging::addSink(make_shared<NiceStderrSink>(consoleLevel));
 		}
-		ExporterInput exporterInput = ExporterInput(inputFilePath, animation, targetShapeSet);
-		logging::info("Starting export.");
-		exporter->exportAnimation(exporterInput, outputFile ? *outputFile : std::cout);
-		logging::info("Done exporting.");
+		logging::removeSink(defaultSink);
+		// ... to log file
+		if (*logFileOpt) {
+			auto fileSink = createFileSink(logFileName, logLevel);
+			logging::addSink(fileSink);
+		}
 
-		logging::log(SuccessEntry());
-	} catch (...) {
-		std::throw_with_nested(
-			std::runtime_error(fmt::format("Error processing file {}.", inputFilePath.string()))
+		// Validate and transform command line arguments
+		if (maxThreadCount < 1) {
+			throw std::runtime_error("Thread count must be 1 or higher.");
+		}
+		path inputFilePath { inputFileName };
+		ShapeSet targetShapeSet = getTargetShapeSet(extendedShapes);
+
+		unique_ptr<Exporter> exporter = createExporter(
+			exportFormat,
+			targetShapeSet,
+			datFrameRate,
+			datUsePrestonBlair
 		);
-	}
 
+		logging::log(StartEntry(inputFilePath));
+		logging::debugFormat("Command line: {}",
+			join(args | transformed([](string arg) { return fmt::format("\"{}\"", arg); }), " "));
+
+		try {
+			// On progress change: Create log message
+			ProgressForwarder progressSink([](double progress) {
+				logging::log(ProgressEntry(progress));
+			});
+
+			// Animate the recording
+			logging::info("Starting animation.");
+			JoiningContinuousTimeline<Shape> animation = animateWaveFile(
+				inputFilePath,
+				static_cast<bool>(*dialogOpt)
+					? readUtf8File(dialogFile)
+					: std::optional<string>(),
+				*createRecognizer(recognizerType),
+				targetShapeSet,
+				maxThreadCount,
+				progressSink);
+			logging::info("Done animating.");
+
+			// Export animation
+			optional<std::ofstream> outputFile;
+			if (*outputFileOpt) {
+				outputFile.emplace(path { outputFileName });
+				outputFile->exceptions(std::ifstream::failbit | std::ifstream::badbit);
+			}
+			ExporterInput exporterInput = ExporterInput(inputFilePath, animation, targetShapeSet);
+			logging::info("Starting export.");
+			exporter->exportAnimation(exporterInput, outputFile ? *outputFile : std::cout);
+			logging::info("Done exporting.");
+
+			logging::log(SuccessEntry());
+		} catch (...) {
+			std::throw_with_nested(
+				std::runtime_error(fmt::format("Error processing file {}.", inputFilePath.string()))
+			);
+		}
+	} catch (const exception& e) {
+		// Generic error
+		string message = getMessage(e);
+		logging::log(FailureEntry(message));
+		return 1;
+	}
 	return 0;
 }
