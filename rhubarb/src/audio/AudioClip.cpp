@@ -1,5 +1,5 @@
 #include "audio/AudioClip.h"
-#include <fmt/core.h>
+#include <format>
 
 using std::invalid_argument;
 
@@ -25,10 +25,10 @@ SafeSampleReader::SafeSampleReader(SampleReader unsafeRead, AudioClip::size_type
 
 inline AudioClip::value_type SafeSampleReader::operator()(AudioClip::size_type index) {
 	if (index < 0) {
-		throw invalid_argument(fmt::format("Cannot read from sample index {}. Index < 0.", index));
+		throw invalid_argument(std::format("Cannot read from sample index {}. Index < 0.", index));
 	}
 	if (index >= size) {
-		throw invalid_argument(fmt::format(
+		throw invalid_argument(std::format(
 			"Cannot read from sample index {}. Clip size is {}.",
 			index,
 			size

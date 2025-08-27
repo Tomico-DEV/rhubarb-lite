@@ -21,7 +21,7 @@ void NiceStderrSink::receive(const logging::Entry& entry) {
 	// the technical log message.
 	if (const auto* startEntry = dynamic_cast<const StartEntry*>(&entry)) {
 		std::cerr
-			<< fmt::format("Generating lip sync data for {}.", startEntry->getInputFilePath().string())
+			<< std::format("Generating lip sync data for {}.", startEntry->getInputFilePath().string())
 			<< std::endl;
 		startProgressIndication();
 	}

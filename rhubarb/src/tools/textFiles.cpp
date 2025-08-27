@@ -1,5 +1,5 @@
 #include "tools/textFiles.h"
-#include <fmt/core.h>
+#include <format>
 #include <fstream>
 #include "tools/stringTools.h"
 
@@ -8,7 +8,7 @@ using std::filesystem::path;
 
 string readUtf8File(path filePath) {
 	if (!exists(filePath)) {
-		throw std::invalid_argument(fmt::format("File {} does not exist.", filePath.string()));
+		throw std::invalid_argument(std::format("File {} does not exist.", filePath.string()));
 	}
 	try {
 		std::ifstream file;
@@ -21,7 +21,7 @@ string readUtf8File(path filePath) {
 
 		return text;
 	} catch (...) {
-		std::throw_with_nested(std::runtime_error(fmt::format("Error reading file {0}.", filePath.string())));
+		std::throw_with_nested(std::runtime_error(std::format("Error reading file {0}.", filePath.string())));
 	}
 }
 

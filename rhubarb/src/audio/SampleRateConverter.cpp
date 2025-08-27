@@ -1,7 +1,7 @@
 #include <cmath>
 #include "audio/SampleRateConverter.h"
 #include <stdexcept>
-#include <fmt/core.h>
+#include <format>
 
 using std::invalid_argument;
 using std::unique_ptr;
@@ -17,7 +17,7 @@ SampleRateConverter::SampleRateConverter(unique_ptr<AudioClip> inputClip, int ou
 		throw invalid_argument("Sample rate must be positive.");
 	}
 	if (this->inputClip->getSampleRate() < outputSampleRate) {
-		throw invalid_argument(fmt::format(
+		throw invalid_argument(std::format(
 			"Upsampling not supported. Input sample rate must not be below {}Hz.",
 			outputSampleRate
 		));

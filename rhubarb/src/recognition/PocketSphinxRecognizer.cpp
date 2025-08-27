@@ -32,7 +32,7 @@ bool dictionaryContains(dict_t& dictionary, const string& word) {
 
 s3wid_t getWordId(const string& word, dict_t& dictionary) {
 	const s3wid_t wordId = dict_wordid(&dictionary, word.c_str());
-	if (wordId == BAD_S3WID) throw invalid_argument(fmt::format("Unknown word '{}'.", word));
+	if (wordId == BAD_S3WID) throw invalid_argument(std::format("Unknown word '{}'.", word));
 	return wordId;
 }
 
@@ -61,7 +61,7 @@ lambda_unique_ptr<ngram_model_t> createDefaultLanguageModel(ps_decoder_t& decode
 		ngram_model_read(decoder.config, modelPath.string().c_str(), NGRAM_AUTO, decoder.lmath),
 		[](ngram_model_t* lm) { ngram_model_free(lm); });
 	if (!result) {
-		throw runtime_error(fmt::format("Error reading language model from {}.", modelPath.string()));
+		throw runtime_error(std::format("Error reading language model from {}.", modelPath.string()));
 	}
 
 	return result;

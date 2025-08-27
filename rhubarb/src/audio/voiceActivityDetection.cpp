@@ -10,7 +10,7 @@
 #include <webrtc/common_audio/vad/vad_core.h>
 
 using std::vector;
-using fmt::format;
+using std::format;
 using std::runtime_error;
 using std::unique_ptr;
 
@@ -84,7 +84,7 @@ JoiningBoundedTimeline<void> detectVoiceActivity(
 	std::vector<std::string> parts;
 	parts.reserve(activity.size());
 	for (const auto &t : activity) {
-		parts.push_back(fmt::format("{0}-{1}", t.getStart(), t.getEnd()));
+		parts.push_back(std::format("{}-{}", t.getStart(), t.getEnd()));
 	}
 
 	// join parts with ", "

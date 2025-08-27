@@ -21,12 +21,16 @@ std::ostream& operator<<(std::ostream& stream, RecognizerType value);
 std::istream& operator>>(std::istream& stream, RecognizerType& value);
 
 template <>
-struct fmt::formatter<RecognizerType> : fmt::formatter<std::string> {
+struct std::formatter<RecognizerType> : std::formatter<std::string> {
+    constexpr auto parse(std::format_parse_context& ctx) {
+        return std::formatter<std::string>::parse(ctx);
+    }
+
 	inline auto format(const RecognizerType& value, format_context& ctx) const
 	-> format_context::iterator
 	{
 		std::ostringstream oss;
 		oss << value;
-		return fmt::formatter<std::string>::format(oss.str(), ctx);
+		return std::formatter<std::string>::format(oss.str(), ctx);
 	}
 };

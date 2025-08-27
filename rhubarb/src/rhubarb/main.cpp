@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fmt/core.h>
+#include <format>
 #include <CLI/CLI.hpp>
 #include "core/appInfo.h"
 #include "logging/logging.h"
@@ -264,7 +264,7 @@ int main(int platformArgc, char* platformArgv[]) {
 
 		logging::log(StartEntry(inputFilePath));
 		logging::debugFormat("Command line: {}",
-			join(args | transform([](string arg) { return fmt::format("\"{}\"", arg); }), " "));
+			join(args | transform([](string arg) { return std::format("\"{}\"", arg); }), " "));
 
 		try {
 			// On progress change: Create log message
@@ -299,7 +299,7 @@ int main(int platformArgc, char* platformArgv[]) {
 			logging::log(SuccessEntry());
 		} catch (...) {
 			std::throw_with_nested(
-				std::runtime_error(fmt::format("Error processing file {}.", inputFilePath.string()))
+				std::runtime_error(std::format("Error processing file {}.", inputFilePath.string()))
 			);
 		}
 	} catch (const exception& e) {

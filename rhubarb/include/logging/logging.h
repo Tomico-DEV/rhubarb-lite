@@ -3,8 +3,9 @@
 #include "tools/EnumConverter.h"
 #include "Sink.h"
 #include "Level.h"
-#include <fmt/core.h>
+#include <format>
 #include <sstream>
+#include "core/Phone.h"
 
 #include <memory>
 
@@ -18,9 +19,11 @@ namespace logging {
 
 	void log(Level level, const std::string& message);
 
+
+
 	template<typename... Args>
 	void logFormat(Level level, std::string_view fmt_str, const Args&... args) {
-		log(level, fmt::vformat(fmt_str,  fmt::make_format_args(args...)));
+		log(level, std::vformat(fmt_str,  std::make_format_args(args...)));
 	}
 
 #define LOG_WITH_LEVEL(levelName, levelEnum) \

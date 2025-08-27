@@ -43,18 +43,21 @@ std::istream& operator>>(std::istream& stream, Shape& value);
 inline bool isClosed(Shape shape) {
 	return shape == Shape::A || shape == Shape::X;
 }
-
 template <>
-struct fmt::formatter<Shape> : fmt::formatter<std::string> {
+struct std::formatter<Shape> : std::formatter<std::string> {
+    constexpr auto parse(std::format_parse_context& ctx) {
+        return std::formatter<std::string>::parse(ctx);
+    }
+
     template <typename FormatContext>
-    auto format(const Shape& value, FormatContext& ctx)
-	-> format_context::iterator
-	{
+    auto format(const Shape& value, FormatContext& ctx) const
+        -> decltype(ctx.out()) {
         std::ostringstream oss;
         oss << value;
-        return fmt::formatter<std::string>::format(oss.str(), ctx);
+        return std::formatter<std::string>::format(oss.str(), ctx);
     }
 };
+
 
 
 // A set of mouth shapes.

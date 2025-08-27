@@ -8,7 +8,7 @@ SemanticEntry::SemanticEntry(Level level, const string& message) :
 {}
 
 StartEntry::StartEntry(const std::filesystem::path& inputFilePath) :
-	SemanticEntry(Level::Info, fmt::format("Application startup. Input file: {}.", inputFilePath.string())),
+	SemanticEntry(Level::Info, std::format("Application startup. Input file: {}.", inputFilePath.string())),
 	inputFilePath(inputFilePath)
 {}
 
@@ -17,7 +17,7 @@ std::filesystem::path StartEntry::getInputFilePath() const {
 }
 
 ProgressEntry::ProgressEntry(double progress) :
-	SemanticEntry(Level::Trace, fmt::format("Progress: {}%", static_cast<int>(progress * 100))),
+	SemanticEntry(Level::Trace, std::format("Progress: {}%", static_cast<int>(progress * 100))),
 	progress(progress)
 {}
 
@@ -30,7 +30,7 @@ SuccessEntry::SuccessEntry() :
 {}
 
 FailureEntry::FailureEntry(const string& reason) :
-	SemanticEntry(Level::Fatal, fmt::format("Application terminating with error: {}", reason)),
+	SemanticEntry(Level::Fatal, std::format("Application terminating with error: {}", reason)),
 	reason(reason)
 {}
 

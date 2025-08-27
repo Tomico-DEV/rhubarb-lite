@@ -1,6 +1,6 @@
 #include "tools/tools.h"
 #include "tools/platformTools.h"
-#include <fmt/core.h>
+#include <format>
 #include <chrono>
 #include <vector>
 
@@ -8,7 +8,7 @@ using std::string;
 using std::chrono::duration;
 
 string formatDuration(duration<double> seconds) {
-	return fmt::format("{0:.2f}", seconds.count());
+	return std::format("{0:.2f}", seconds.count());
 }
 
 string formatTime(time_t time, const string& format) {

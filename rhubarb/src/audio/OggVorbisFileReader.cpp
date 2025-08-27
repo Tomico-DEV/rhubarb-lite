@@ -3,7 +3,7 @@
 #include "vorbis/codec.h"
 #include "vorbis/vorbisfile.h"
 #include "tools/tools.h"
-#include <fmt/core.h>
+#include <format>
 #include "tools/fileTools.h"
 #include <cassert>
 
@@ -48,7 +48,7 @@ T throwOnError(T code) {
 	const bool error = code < 0 && code != OV_HOLE;
 	if (error) {
 		const std::string message =
-			fmt::format("{} (Vorbis error {})", vorbisErrorToString(code), code);
+			std::format("{} (Vorbis error {})", vorbisErrorToString(code), code);
 		throw std::runtime_error(message);
 	}
 	return code;

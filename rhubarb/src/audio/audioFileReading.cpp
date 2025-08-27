@@ -1,5 +1,5 @@
 #include "audio/audioFileReading.h"
-#include <fmt/core.h>
+#include <format>
 #include "audio/WaveFileReader.h"
 #include <ranges>
 #include <algorithm>
@@ -20,11 +20,11 @@ std::unique_ptr<AudioClip> createAudioFileClip(path filePath) {
 		if (extension == ".ogg") {
 			return std::make_unique<OggVorbisFileReader>(filePath);
 		}
-		throw runtime_error(fmt::format(
+		throw runtime_error(std::format(
 			"Unsupported file extension '{}'. Supported extensions are '.wav' and '.ogg'.",
 			extension
 		));
 	} catch (...) {
-		std::throw_with_nested(runtime_error(format("Could not open sound file {}.", filePath.string())));
+		std::throw_with_nested(runtime_error(std::format("Could not open sound file {}.", filePath.string())));
 	}
 }

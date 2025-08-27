@@ -1,4 +1,4 @@
-#include <fmt/core.h>
+#include <format>
 #include "audio/WaveFileReader.h"
 #include "audio/ioTools.h"
 #include <iostream>
@@ -62,7 +62,7 @@ WaveFormatInfo getWaveFormatInfo(const path& filePath) {
 	read<uint32_t>(file); // Chunk size
 	const uint32_t waveId = read<uint32_t>(file);
 	if (waveId != fourcc('W', 'A', 'V', 'E')) {
-		throw runtime_error(fmt::format("File format is not WAVE, but {}.", fourccToString(waveId)));
+		throw runtime_error(std::format("File format is not WAVE, but {}.", fourccToString(waveId)));
 	}
 
 	// Read chunks until we reach the data chunk
@@ -117,7 +117,7 @@ WaveFormatInfo getWaveFormatInfo(const path& filePath) {
 							bytesPerSample = 4;
 						} else {
 							throw runtime_error(
-								fmt::format("Unsupported sample format: {}-bit PCM.", bitsPerSample));
+								std::format("Unsupported sample format: {}-bit PCM.", bitsPerSample));
 						}
 						if (bytesPerSample != bytesPerFrame / formatInfo.channelCount) {
 							throw runtime_error("Unsupported sample organization.");
@@ -132,12 +132,12 @@ WaveFormatInfo getWaveFormatInfo(const path& filePath) {
 							bytesPerSample = 8;
 						} else {
 							throw runtime_error(
-								fmt::format("Unsupported sample format: {}-bit IEEE Float.", bitsPerSample)
+								std::format("Unsupported sample format: {}-bit IEEE Float.", bitsPerSample)
 							);
 						}
 						break;
 					default:
-						throw runtime_error(fmt::format(
+						throw runtime_error(std::format(
 							"Unsupported audio codec: '{}'. Only uncompressed codecs ('{}' and '{}') are supported.",
 							codecToString(codec), codecToString(Codec::Pcm), codecToString(Codec::Float)
 						));
@@ -491,6 +491,6 @@ string codecToString(int codec) {
 		case 0xfffe: return "Extensible";
 		case 0xffff: return "Development";
 		default:
-			return fmt::format("{0:#x}", codec);
+			return std::format("{0:#x}", codec);
 	}
 }

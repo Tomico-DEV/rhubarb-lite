@@ -7,7 +7,7 @@ Shape convertToTargetShapeSet(Shape shape, const ShapeSet& targetShapeSet) {
 	const Shape basicShape = getBasicShape(shape);
 	if (targetShapeSet.find(basicShape) == targetShapeSet.end()) {
 		throw std::invalid_argument(
-			fmt::format("Target shape set must contain basic shape {}.", basicShape));
+			std::format("Target shape set must contain basic shape {}.", basicShape));
 	}
 	return basicShape;
 }

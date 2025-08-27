@@ -28,14 +28,14 @@ DatExporter::DatExporter(const ShapeSet& targetShapeSet, double frameRate, bool 
 	const double maxFrameRate = 100.0;
 
 	if (frameRate < minFrameRate || frameRate > maxFrameRate) {
-		throw std::runtime_error(fmt::format("Frame rate must be between {} and {} fps.", minFrameRate, maxFrameRate));
+		throw std::runtime_error(std::format("Frame rate must be between {} and {} fps.", minFrameRate, maxFrameRate));
 	}
 
 	if (convertToPrestonBlair) {
 		for (Shape shape : targetShapeSet) {
 			if (prestonBlairShapeNames.find(shape) == prestonBlairShapeNames.end()) {
 				throw std::runtime_error(
-					fmt::format("Mouth shape {} cannot be converted to Preston Blair shape names.",
+					std::format("Mouth shape {} cannot be converted to Preston Blair shape names.",
 						shape
 					));
 			}

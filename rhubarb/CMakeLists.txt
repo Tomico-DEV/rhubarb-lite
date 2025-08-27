@@ -54,9 +54,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Define libraries
 
-# ... fmt
-find_package(fmt 9 REQUIRED)
-
 # ... sphinxbase
 FILE(GLOB_RECURSE sphinxbaseFiles "lib/sphinxbase-rev13216/src/libsphinxbase/*.c")
 add_library(sphinxbase ${sphinxbaseFiles})
@@ -406,7 +403,6 @@ add_library(rhubarb-time
 )
 target_include_directories(rhubarb-time PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-time
-	fmt::fmt
 	rhubarb-logging
 )
 
@@ -414,7 +410,6 @@ target_link_libraries(rhubarb-time
 add_library(rhubarb-tools
 	src/tools/exceptions.cpp
 	src/tools/fileTools.cpp
-	# src/tools/NiceCmdLineOutput.cpp
 	src/tools/platformTools.cpp
 	src/tools/progress.cpp
 	src/tools/ProgressBar.cpp
@@ -425,8 +420,6 @@ add_library(rhubarb-tools
 )
 target_include_directories(rhubarb-tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-tools
-	fmt::fmt
-	CLI11::CLI11
 	whereami
 	utfcpp
 	utf8proc

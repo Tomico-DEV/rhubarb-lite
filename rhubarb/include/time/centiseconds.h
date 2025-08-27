@@ -2,8 +2,7 @@
 
 #include <chrono>
 #include <ostream>
-#include <fmt/core.h>
-#include <fmt/format.h>
+#include <format>
 
 using centiseconds = std::chrono::duration<int, std::centi>;
 
@@ -16,12 +15,16 @@ namespace std {
 }
 
 template <>
-struct fmt::formatter<centiseconds> : fmt::formatter<std::string> {
-    template <typename FormatContext>
-    inline auto format(const centiseconds& cs, FormatContext& ctx) {
+struct std::formatter<centiseconds> : std::formatter<std::string> {
+	constexpr auto parse(std::format_parse_context& ctx) {
+        return std::formatter<std::string>::parse(ctx);
+    }
+	
+	template <typename FormatContext>
+    inline auto format(const centiseconds& cs, FormatContext& ctx) const {
         std::ostringstream oss;
         oss << cs;
-        return fmt::formatter<std::string>::format(oss.str(), ctx);
+        return std::formatter<std::string>::format(oss.str(), ctx);
     }
 };
 

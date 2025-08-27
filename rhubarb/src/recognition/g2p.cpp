@@ -72,7 +72,7 @@ Phone charToPhone(wchar_t c) {
 vector<Phone> wordToPhones(const std::string& word) {
 	static regex validWord("^[a-z']*$");
 	if (!regex_match(word, validWord)) {
-		throw invalid_argument(fmt::format("Word '{}' contains illegal characters.", word));
+		throw invalid_argument(std::format("Word '{}' contains illegal characters.", word));
 	}
 
 	wstring wideWord = latin1ToWide(word);

@@ -29,12 +29,16 @@ namespace logging {
 }
 
 template <>
-struct fmt::formatter<logging::Level> : fmt::formatter<std::string> {
+struct std::formatter<logging::Level> : std::formatter<std::string> {
+	constexpr auto parse(std::format_parse_context& ctx) {
+        return std::formatter<std::string>::parse(ctx);
+    }
+	
 	inline auto format(const logging::Level& lvl, format_context& ctx) const
 	-> format_context::iterator
 	{
 		std::ostringstream oss;
 		oss << lvl;
-		return fmt::formatter<std::string>::format(oss.str(), ctx);
+		return std::formatter<std::string>::format(oss.str(), ctx);
 	}
 };

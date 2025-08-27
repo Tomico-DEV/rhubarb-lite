@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <future>
 #include <chrono>
-#include <fmt/core.h>
+#include <format>
 #include <cmath>
 #include <thread>
 
@@ -61,7 +61,7 @@ void ProgressBar::update(bool showSpinner) {
 	const string spinner = showSpinner
 		? string(1, animation[animationIndex++ % animation.size()])
 		: "";
-	const string text = fmt::format("[{0}{1}] {2:3}% {3}",
+	const string text = std::format("[{0}{1}] {2:3}% {3}",
 		string(progressBlockCount, '#'), string(blockCount - progressBlockCount, '-'),
 		percent,
 		spinner

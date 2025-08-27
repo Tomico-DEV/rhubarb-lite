@@ -13,7 +13,7 @@ MachineReadableStderrSink::MachineReadableStderrSink(Level minLevel) :
 }
 
 string formatLogProperty(const logging::Entry& entry) {
-	return fmt::format(
+	return std::format(
 		R"("log": {{ "level": "{}", "message": "{}" }})",
 		entry.level,
 		escapeJsonString(entry.message)
@@ -25,7 +25,7 @@ void MachineReadableStderrSink::receive(const logging::Entry& entry) {
 	if (dynamic_cast<const SemanticEntry*>(&entry)) {
 		if (const auto* startEntry = dynamic_cast<const StartEntry*>(&entry)) {
 			const string file = escapeJsonString(startEntry->getInputFilePath().string());
-			line = fmt::format(
+			line = std::format(
 				R"({{ "type": "start", "file": "{}", {} }})",
 				file,
 				formatLogProperty(entry)
@@ -34,7 +34,7 @@ void MachineReadableStderrSink::receive(const logging::Entry& entry) {
 		else if (const auto* progressEntry = dynamic_cast<const ProgressEntry*>(&entry)) {
 			const int progressPercent = static_cast<int>(progressEntry->getProgress() * 100);
 			if (progressPercent > lastProgressPercent) {
-				line = fmt::format(
+				line = std::format(
 					R"({{ "type": "progress", "value": {:.2f}, {} }})",
 					progressEntry->getProgress(),
 					formatLogProperty(entry)
@@ -43,11 +43,11 @@ void MachineReadableStderrSink::receive(const logging::Entry& entry) {
 			}
 		}
 		else if (dynamic_cast<const SuccessEntry*>(&entry)) {
-			line = fmt::format(R"({{ "type": "success", {} }})", formatLogProperty(entry));
+			line = std::format(R"({{ "type": "success", {} }})", formatLogProperty(entry));
 		}
 		else if (const auto* failureEntry = dynamic_cast<const FailureEntry*>(&entry)) {
 			const string reason = escapeJsonString(failureEntry->getReason());
-			line = fmt::format(
+			line = std::format(
 				R"({{ "type": "failure", "reason": "{}", {} }})",
 				reason,
 				formatLogProperty(entry)
@@ -59,7 +59,7 @@ void MachineReadableStderrSink::receive(const logging::Entry& entry) {
 	}
 	else {
 		if (entry.level >= minLevel) {
-			line = fmt::format(R"({{ "type": "log", {} }})", formatLogProperty(entry));
+			line = std::format(R"({{ "type": "log", {} }})", formatLogProperty(entry));
 		}
 	}
 

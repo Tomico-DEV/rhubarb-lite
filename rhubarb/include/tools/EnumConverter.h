@@ -8,8 +8,7 @@
 #include <cctype>
 #include <string>
 #include <stdexcept>
-#include <fmt/core.h>
-#include <fmt/format.h>
+#include <format>
 #include <sstream> 
 
 template<typename TEnum>
@@ -35,7 +34,7 @@ public:
         if (!result) {
             auto numericValue = static_cast<typename std::underlying_type<TEnum>::type>(value);
             throw std::invalid_argument(
-                fmt::format("{} is not a valid {} value.", numericValue, typeName)
+                std::format("{} is not a valid {} value.", numericValue, typeName)
             );
         }
 
@@ -54,7 +53,7 @@ public:
         initialize();
         auto result = tryParse(s);
         if (!result) {
-            throw std::invalid_argument(fmt::format("{} is not a valid {} value.", s, typeName));
+            throw std::invalid_argument(std::format("{} is not a valid {} value.", s, typeName));
         }
 
         return *result;

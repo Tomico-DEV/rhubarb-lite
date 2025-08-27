@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <fmt/core.h>
+#include <format>
 #include <utf8proc.h>
 
 std::vector<std::string> splitIntoLines(const std::string& s);
@@ -45,7 +45,7 @@ std::string join(T range, const std::string separator) {
 	for (const auto& element : range) {
 		if (!isFirst) result.append(separator);
 		isFirst = false;
-		result.append(fmt::format("{}", element));
+		result.append(std::format("{}", element));
 	}
 	return result;
 }

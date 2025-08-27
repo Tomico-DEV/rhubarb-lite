@@ -12,7 +12,7 @@ void runParallel(
 	int maxThreadCount)
 {
 	if (maxThreadCount < 1) {
-		throw std::invalid_argument(fmt::format("maxThreadCount cannot be {}.", maxThreadCount));
+		throw std::invalid_argument(std::format("maxThreadCount cannot be {}.", maxThreadCount));
 	}
 
 	if (maxThreadCount == 1) {
@@ -96,7 +96,7 @@ void runParallel(
 	int elementIndex = 0;
 	for (auto& element : collection) {
 		auto& elementProgressSink = progressMerger.addSource(
-			fmt::format("runParallel ({}) #{}", description, elementIndex),
+			std::format("runParallel ({}) #{}", description, elementIndex),
 			getElementProgressWeight(element)
 		);
 		functions.push_back([&]() { processElement(element, elementProgressSink); });
