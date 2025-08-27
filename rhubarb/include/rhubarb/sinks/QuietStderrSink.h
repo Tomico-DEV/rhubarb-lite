@@ -4,6 +4,8 @@
 #include "logging/Sink.h"
 #include <filesystem>
 
+#include <boost/optional.hpp>
+
 // Mostly quiet output to stderr.
 // Entries are only printed if their log level at least matches the specified minimum level.
 class QuietStderrSink : public logging::Sink {

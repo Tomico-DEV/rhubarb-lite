@@ -3,6 +3,8 @@
 #include "logging/Entry.h"
 #include "logging/Sink.h"
 
+#include <boost/optional.hpp>
+
 // Prints machine-readable progress to stderr.
 // Non-semantic entries are only printed if their log level at least matches the specified minimum level.
 class MachineReadableStderrSink : public logging::Sink {

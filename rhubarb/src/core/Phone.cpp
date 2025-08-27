@@ -1,7 +1,6 @@
 #include "core/Phone.h"
 
 using std::string;
-using boost::optional;
 
 PhoneConverter& PhoneConverter::get() {
 	static PhoneConverter converter;
@@ -63,7 +62,7 @@ EnumConverter<Phone>::member_data PhoneConverter::getMemberData() {
 	};
 }
 
-optional<Phone> PhoneConverter::tryParse(const string& s) {
+std::optional<Phone> PhoneConverter::tryParse(const string& s) {
 	auto result = EnumConverter<Phone>::tryParse(s);
 	if (result) return result;
 

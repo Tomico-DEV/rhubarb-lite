@@ -85,7 +85,7 @@ protected:
 	std::string getTypeName() override;
 	member_data getMemberData() override;
 public:
-	boost::optional<Phone> tryParse(const std::string& s) override;
+	std::optional<Phone> tryParse(const std::string& s) override;
 };
 
 std::ostream& operator<<(std::ostream& stream, Phone value);

@@ -4,6 +4,8 @@
 #include "Sink.h"
 #include "Level.h"
 
+#include <memory>
+
 namespace logging {
 
 	bool addSink(std::shared_ptr<Sink> sink);

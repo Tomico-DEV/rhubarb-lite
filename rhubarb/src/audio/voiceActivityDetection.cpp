@@ -83,12 +83,26 @@ JoiningBoundedTimeline<void> detectVoiceActivity(
 		}
 	}
 
+	std::vector<std::string> parts;
+	parts.reserve(activity.size());
+	for (const auto &t : activity) {
+		parts.push_back(fmt::format("{0}-{1}", t.getStart(), t.getEnd()));
+	}
+
+	// join parts with ", "
+	std::string joined;
+	if (!parts.empty()) {
+		joined = parts[0];
+		for (size_t i = 1; i < parts.size(); ++i) {
+			joined += ", ";
+			joined += parts[i];
+		}
+	}
+
 	logging::debugFormat(
 		"Found {} sections of voice activity: {}",
 		activity.size(),
-		join(activity | transformed([](const Timed<void>& t) {
-			return format("{0}-{1}", t.getStart(), t.getEnd());
-		}), ", ")
+		joined
 	);
 
 	return activity;

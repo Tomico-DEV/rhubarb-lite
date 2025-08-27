@@ -6,6 +6,8 @@
 #include "tools/progress.h"
 #include <filesystem>
 
+#include <boost/algorithm/string/trim.hpp> 
+
 extern "C" {
 #include <pocketsphinx.h>
 }
