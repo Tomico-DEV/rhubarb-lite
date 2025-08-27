@@ -4,7 +4,6 @@
 #include <future>
 #include <chrono>
 #include <fmt/core.h>
-#include <boost/algorithm/clamp.hpp>
 #include <cmath>
 #include <thread>
 
@@ -14,7 +13,7 @@ double sanitizeProgress(double progress) {
 	// Make sure value is in [0..1] range
 	return std::isnan(progress)
 		? 0.0
-		: boost::algorithm::clamp(progress, 0.0, 1.0);
+		: std::clamp(progress, 0.0, 1.0);
 }
 
 ProgressBar::ProgressBar(double progress) :

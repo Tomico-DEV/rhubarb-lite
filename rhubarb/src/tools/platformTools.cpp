@@ -1,15 +1,19 @@
 #include <filesystem>
 #include <format>
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/uuid_io.hpp>
 #include "tools/platformTools.h"
 #include <whereami.h>
 #include <utf8.h>
 #include <gsl_util.h>
 #include "tools/tools.h"
 #include <codecvt>
+#include <ctime>
+#include <cstring>
 #include <iostream>
+#include <array>
+#include <random>
+#include <sstream>
+#include <iomanip>
+#include <string>
 
 #ifdef _WIN32
 	#include <Windows.h>
@@ -19,6 +23,30 @@
 using std::filesystem::path;
 using std::string;
 using std::vector;
+
+
+std::string generateUuid() {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<uint32_t> dis;
+
+    std::array<uint8_t, 16> uuidBytes;
+    for (auto &b : uuidBytes) {
+        b = static_cast<uint8_t>(dis(gen) & 0xFF);
+    }
+
+    // Set version (4) and variant (RFC 4122)
+    uuidBytes[6] = (uuidBytes[6] & 0x0F) | 0x40;
+    uuidBytes[8] = (uuidBytes[8] & 0x3F) | 0x80;
+
+    std::ostringstream oss;
+    oss << std::hex << std::setfill('0');
+    for (size_t i = 0; i < uuidBytes.size(); ++i) {
+        oss << std::setw(2) << static_cast<int>(uuidBytes[i]);
+        if (i == 3 || i == 5 || i == 7 || i == 9) oss << "-";
+    }
+    return oss.str();
+}
 
 path _getBinPath() {
 	try {
@@ -85,8 +113,7 @@ path getBinDirectory() {
 
 path getTempFilePath() {
 	const path tempDirectory = std::filesystem::temp_directory_path();
-	static boost::uuids::random_generator generateUuid;
-	const string fileName = to_string(generateUuid());
+	const string fileName = generateUuid();
 	return tempDirectory / fileName;
 }
 

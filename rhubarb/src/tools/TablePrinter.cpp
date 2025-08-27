@@ -1,7 +1,6 @@
 #include "tools/TablePrinter.h"
 #include <algorithm>
 #include <iomanip>
-#include <boost/io/ios_state.hpp>
 #include "tools/stringTools.h"
 
 using std::ostream;
@@ -9,6 +8,16 @@ using std::initializer_list;
 using std::invalid_argument;
 using std::vector;
 using std::string;
+
+// replacement for boost::io::ios_flags_saver
+template <typename Stream>
+struct ios_flags_saver {
+    Stream& stream;
+    std::ios::fmtflags oldFlags;
+    
+    ios_flags_saver(Stream& s) : stream(s), oldFlags(s.flags()) {}
+    ~ios_flags_saver() { stream.flags(oldFlags); }
+};
 
 TablePrinter::TablePrinter(ostream* stream, initializer_list<int> columnWidths, int columnSpacing) :
 	stream(stream),
@@ -47,8 +56,9 @@ void TablePrinter::printRow(initializer_list<string> columns) const {
 		}
 	}
 
+	
 	// Save stream flags, restore them at end of scope
-	boost::io::ios_flags_saver ifs(*stream);
+	ios_flags_saver ifs(*stream);
 
 	// Print lines
 	*stream << std::left;
