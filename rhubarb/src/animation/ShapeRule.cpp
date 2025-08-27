@@ -3,7 +3,7 @@
 #include <utility>
 #include "time/ContinuousTimeline.h"
 
-using boost::optional;
+using std::optional;
 using boost::adaptors::transformed;
 
 template<typename T, bool AutoJoin>
@@ -12,7 +12,7 @@ ContinuousTimeline<optional<T>, AutoJoin> boundedTimelinetoContinuousOptional(
 ) {
 	return {
 		timeline.getRange(),
-		boost::none,
+		std::nullopt,
 		timeline | transformed([](const Timed<T>& timedValue) {
 			return Timed<optional<T>>(timedValue.getTimeRange(), timedValue.getValue());
 		})
@@ -30,7 +30,7 @@ ShapeRule::ShapeRule(
 {}
 
 ShapeRule ShapeRule::getInvalid() {
-	return { {}, boost::none, { 0_cs, 0_cs } };
+	return { {}, std::nullopt, { 0_cs, 0_cs } };
 }
 
 bool ShapeRule::operator==(const ShapeRule& rhs) const {
@@ -55,7 +55,7 @@ ContinuousTimeline<ShapeRule> getShapeRules(const BoundedTimeline<Phone>& phones
 	// Create timeline of shape rules
 	ContinuousTimeline<ShapeRule> shapeRules(
 		phones.getRange(),
-		{ { Shape::X }, boost::none, { 0_cs, 0_cs } }
+		{ { Shape::X }, std::nullopt, { 0_cs, 0_cs } }
 	);
 	centiseconds previousDuration = 0_cs;
 	for (const auto& timedPhone : continuousPhones) {
