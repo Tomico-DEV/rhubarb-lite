@@ -1,4 +1,4 @@
-= Rhubarb Lip Sync
+= Rhubarb Lip Sync (Lite!)
 :toc:
 :icons: font
 
@@ -32,6 +32,7 @@ Rhubarb Lip Sync integrates with the following applications:
 * *Visionaire Studio* (see https://www.visionaire-studio.net/forum/thread/mouth-animation-using-rhubarb-lip-sync[external link])
 
 In addition, you can use Rhubarb Lip Sync's command line interface (*CLI*) to generate files in various <<outputFormats,output formats>> (<<tsv,TSV>>/<<xml,XML>>/<<json,JSON>>).
+Furthermore, Rhubarb Lip Sync Lite's restructed codebase and removed dependencies allows for easy native integration into c++ projects and more!
 
 == Demo video
 
