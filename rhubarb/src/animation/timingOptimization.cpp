@@ -1,9 +1,9 @@
 #include "animation/timingOptimization.h"
 #include "time/timedLogging.h"
-#include <boost/lexical_cast.hpp>
 #include <map>
 #include <algorithm>
 #include "animation/ShapeRule.h"
+#include "tools/utils.h"
 
 using std::string;
 using std::map;
@@ -14,7 +14,8 @@ string getShapesString(const JoiningContinuousTimeline<Shape>& shapes) {
 		if (!result.empty()) {
 			result.append(" ");
 		}
-		result.append(boost::lexical_cast<std::string>(timedShape.getValue()));
+		
+		result.append(lexical_cast(timedShape.getValue()));
 	}
 	return result;
 }

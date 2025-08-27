@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cctype>
 #include <string>
+#include <sstream>
 
 // trim left in-place
 inline void ltrim(std::string &s) {
@@ -22,3 +23,13 @@ inline void trim(std::string &s) {
     ltrim(s);
     rtrim(s);
 }
+
+// replacement for boost::lexical_cast<std::string>
+template <typename T>
+inline std::string lexical_cast(const T& value)
+{
+    std::ostringstream oss;
+	oss << value;
+    return oss.str();
+}
+
