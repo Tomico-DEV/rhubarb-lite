@@ -2,10 +2,10 @@
 #include "rhubarb/semanticEntries.h"
 #include "tools/stringTools.h"
 #include <iostream>
+#include <optional>
 
 using std::string;
 using logging::Level;
-using boost::optional;
 
 MachineReadableStderrSink::MachineReadableStderrSink(Level minLevel) :
 	minLevel(minLevel)
@@ -21,7 +21,7 @@ string formatLogProperty(const logging::Entry& entry) {
 }
 
 void MachineReadableStderrSink::receive(const logging::Entry& entry) {
-	optional<string> line;
+	std::optional<string> line;
 	if (dynamic_cast<const SemanticEntry*>(&entry)) {
 		if (const auto* startEntry = dynamic_cast<const StartEntry*>(&entry)) {
 			const string file = escapeJsonString(startEntry->getInputFilePath().u8string());

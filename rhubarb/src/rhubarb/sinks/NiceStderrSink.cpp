@@ -2,7 +2,6 @@
 #include "logging/sinks.h"
 #include "logging/formatters.h"
 #include "rhubarb/semanticEntries.h"
-#include <boost/utility/in_place_factory.hpp>
 
 using std::make_shared;
 using logging::Level;
@@ -37,7 +36,7 @@ void NiceStderrSink::receive(const logging::Entry& entry) {
 	else {
 		// Treat the entry as a normal log message
 		if (entry.level >= minLevel) {
-			const bool inProgress = progressBar.is_initialized();
+			const bool inProgress = progressBar.has_value();
 			if (inProgress) interruptProgressIndication();
 			innerSink->receive(entry);
 			if (inProgress) resumeProgressIndication();
@@ -47,7 +46,7 @@ void NiceStderrSink::receive(const logging::Entry& entry) {
 
 void NiceStderrSink::startProgressIndication() {
 	std::cerr << "Progress: ";
-	progressBar = boost::in_place();
+	progressBar.emplace();
 }
 
 void NiceStderrSink::interruptProgressIndication() {
@@ -57,5 +56,5 @@ void NiceStderrSink::interruptProgressIndication() {
 
 void NiceStderrSink::resumeProgressIndication() {
 	std::cerr << "Progress (cont'd): ";
-	progressBar = boost::in_place(progress);
+	progressBar.emplace(progress);
 }
