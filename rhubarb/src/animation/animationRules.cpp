@@ -1,12 +1,12 @@
 #include "animation/animationRules.h"
-#include <boost/algorithm/clamp.hpp>
+#include <algorithm>
 #include "animation/shapeShorthands.h"
 #include "tools/array.h"
 #include "time/ContinuousTimeline.h"
 
 using std::chrono::duration_cast;
-using boost::algorithm::clamp;
-using boost::optional;
+using std::clamp;
+using std::optional;
 using std::array;
 using std::pair;
 using std::map;

@@ -27,7 +27,7 @@ enum class TweenTiming {
 };
 
 // Returns the tween shape and timing to use to transition between the specified two mouth shapes.
-boost::optional<std::pair<Shape, TweenTiming>> getTween(Shape first, Shape second);
+std::optional<std::pair<Shape, TweenTiming>> getTween(Shape first, Shape second);
 
 // Returns the shape set(s) to use for a given phone.
 // The resulting timeline will always cover the entire duration of the phone (starting at 0 cs).

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <boost/lexical_cast.hpp>
+#include <format.h>
 #include <utf8proc.h>
 
 std::vector<std::string> splitIntoLines(const std::string& s);
@@ -45,7 +45,7 @@ std::string join(T range, const std::string separator) {
 	for (const auto& element : range) {
 		if (!isFirst) result.append(separator);
 		isFirst = false;
-		result.append(boost::lexical_cast<std::string>(element));
+		result.append(fmt::format("{}", element));
 	}
 	return result;
 }
