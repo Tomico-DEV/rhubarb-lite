@@ -58,10 +58,10 @@ void addMissingDictionaryWords(const vector<string>& words, ps_decoder_t& decode
 lambda_unique_ptr<ngram_model_t> createDefaultLanguageModel(ps_decoder_t& decoder) {
 	path modelPath = getSphinxModelDirectory() / "en-us.lm.bin";
 	lambda_unique_ptr<ngram_model_t> result(
-		ngram_model_read(decoder.config, modelPath.u8string().c_str(), NGRAM_AUTO, decoder.lmath),
+		ngram_model_read(decoder.config, modelPath.string().c_str(), NGRAM_AUTO, decoder.lmath),
 		[](ngram_model_t* lm) { ngram_model_free(lm); });
 	if (!result) {
-		throw runtime_error(fmt::format("Error reading language model from {}.", modelPath.u8string()));
+		throw runtime_error(fmt::format("Error reading language model from {}.", modelPath.string()));
 	}
 
 	return result;

@@ -27,7 +27,7 @@ void QuietStderrSink::receive(const logging::Entry& entry) {
 		if (quietSoFar) {
 			// This is the first message we print. Give a bit of context.
 			const string intro = inputFilePath
-				? fmt::format("{} {} processing file {}:", appName, appVersion, inputFilePath->u8string())
+				? fmt::format("{} {} processing file {}:", appName, appVersion, inputFilePath->string())
 				: fmt::format("{} {}:", appName, appVersion);
 			std::cerr << intro << std::endl;
 			quietSoFar = false;

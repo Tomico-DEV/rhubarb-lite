@@ -6,9 +6,10 @@ include("../appInfo.cmake")
 # Support legacy OS X versions
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
-# Enable C++17
-set(CMAKE_CXX_STANDARD 17)
+# Enable C++20
+set(CMAKE_CXX_STANDARD 20) 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Enable POSIX threads
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -60,11 +61,16 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 link_libraries(Boost::headers) # Just about every project needs Boost, but just the headers
 
 # ... C++ Format
-FILE(GLOB cppFormatFiles "lib/cppformat/*.cc")
-add_library(cppFormat ${cppFormatFiles})
-target_include_directories(cppFormat SYSTEM PUBLIC "lib/cppformat")
-target_compile_options(cppFormat PRIVATE ${disableWarningsFlags})
-set_target_properties(cppFormat PROPERTIES FOLDER lib)
+# FILE(GLOB cppFormatFiles "lib/cppformat/*.cc")
+# add_library(cppFormat ${cppFormatFiles})
+#target_include_directories(cppFormat SYSTEM PUBLIC "lib/cppformat")
+# use c++17
+# target_compile_options(cppFormat PRIVATE ${disableWarningsFlags})
+# target_compile_features(cppFormat PUBLIC cxx_std_17)
+# set_target_properties(cppFormat PROPERTIES FOLDER lib)
+
+# fmt
+find_package(fmt 9 REQUIRED)
 
 # ... sphinxbase
 FILE(GLOB_RECURSE sphinxbaseFiles "lib/sphinxbase-rev13216/src/libsphinxbase/*.c")
@@ -401,7 +407,7 @@ add_library(rhubarb-time
 )
 target_include_directories(rhubarb-time PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-time
-	cppFormat
+	fmt::fmt
 	rhubarb-logging
 )
 
@@ -420,7 +426,7 @@ add_library(rhubarb-tools
 )
 target_include_directories(rhubarb-tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-tools
-	cppFormat
+	fmt::fmt
 	whereami
 	utfcpp
 	utf8proc

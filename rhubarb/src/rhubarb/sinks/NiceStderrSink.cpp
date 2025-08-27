@@ -2,6 +2,7 @@
 #include "logging/sinks.h"
 #include "logging/formatters.h"
 #include "rhubarb/semanticEntries.h"
+#include <cassert>
 
 using std::make_shared;
 using logging::Level;
@@ -20,7 +21,7 @@ void NiceStderrSink::receive(const logging::Entry& entry) {
 	// the technical log message.
 	if (const auto* startEntry = dynamic_cast<const StartEntry*>(&entry)) {
 		std::cerr
-			<< fmt::format("Generating lip sync data for {}.", startEntry->getInputFilePath().u8string())
+			<< fmt::format("Generating lip sync data for {}.", startEntry->getInputFilePath().string())
 			<< std::endl;
 		startProgressIndication();
 	}

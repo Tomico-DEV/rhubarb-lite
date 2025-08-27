@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <format.h>
+#include <fmt/core.h>
 #include <utf8proc.h>
 
 std::vector<std::string> splitIntoLines(const std::string& s);

@@ -24,7 +24,7 @@ void MachineReadableStderrSink::receive(const logging::Entry& entry) {
 	std::optional<string> line;
 	if (dynamic_cast<const SemanticEntry*>(&entry)) {
 		if (const auto* startEntry = dynamic_cast<const StartEntry*>(&entry)) {
-			const string file = escapeJsonString(startEntry->getInputFilePath().u8string());
+			const string file = escapeJsonString(startEntry->getInputFilePath().string());
 			line = fmt::format(
 				R"({{ "type": "start", "file": "{}", {} }})",
 				file,

@@ -44,6 +44,19 @@ inline bool isClosed(Shape shape) {
 	return shape == Shape::A || shape == Shape::X;
 }
 
+template <>
+struct fmt::formatter<Shape> : fmt::formatter<std::string> {
+    template <typename FormatContext>
+    auto format(const Shape& value, FormatContext& ctx)
+	-> format_context::iterator
+	{
+        std::ostringstream oss;
+        oss << value;
+        return fmt::formatter<std::string>::format(oss.str(), ctx);
+    }
+};
+
+
 // A set of mouth shapes.
 // This may be used to represent all shapes that can be used to represent a certain sound.
 // Alternatively, it can represent all shapes the user wants to allow as program output.

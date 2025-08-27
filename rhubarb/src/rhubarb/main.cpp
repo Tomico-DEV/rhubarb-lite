@@ -1,5 +1,5 @@
 #include <iostream>
-#include <format.h>
+#include <fmt/core.h>
 #include <tclap/CmdLine.h>
 #include "core/appInfo.h"
 #include "tools/NiceCmdLineOutput.h"

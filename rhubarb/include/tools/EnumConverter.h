@@ -8,7 +8,8 @@
 #include <cctype>
 #include <string>
 #include <stdexcept>
-#include <format.h>
+#include <fmt/core.h>
+#include <sstream> 
 
 template<typename TEnum>
 class EnumConverter {

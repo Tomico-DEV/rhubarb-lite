@@ -11,7 +11,7 @@ void XmlExporter::exportAnimation(const ExporterInput& input, std::ostream& outp
 	ptree tree;
 
 	// Add metadata
-	tree.put("rhubarbResult.metadata.soundFile", absolute(input.inputFilePath).u8string());
+	tree.put("rhubarbResult.metadata.soundFile", absolute(input.inputFilePath).string());
 	tree.put(
 		"rhubarbResult.metadata.duration",
 		formatDuration(input.animation.getRange().getDuration())

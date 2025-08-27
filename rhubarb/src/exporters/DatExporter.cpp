@@ -34,7 +34,10 @@ DatExporter::DatExporter(const ShapeSet& targetShapeSet, double frameRate, bool 
 	if (convertToPrestonBlair) {
 		for (Shape shape : targetShapeSet) {
 			if (prestonBlairShapeNames.find(shape) == prestonBlairShapeNames.end()) {
-				throw std::runtime_error(fmt::format("Mouth shape {} cannot be converted to Preston Blair shape names."));
+				throw std::runtime_error(
+					fmt::format("Mouth shape {} cannot be converted to Preston Blair shape names.",
+						shape
+					));
 			}
 		}
 	}

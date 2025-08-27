@@ -1,7 +1,7 @@
 #include "time/TimeRange.h"
 #include <stdexcept>
 #include <ostream>
-#include <format.h>
+#include <fmt/core.h>
 
 using time_type = TimeRange::time_type;
 
@@ -21,7 +21,7 @@ TimeRange::TimeRange(time_type start, time_type end) :
 {
 	if (start > end) {
 		throw std::invalid_argument(fmt::format(
-			"Time range start must not be less than end. Start: {0}, end: {1}",
+			"Time range start must not be less than end. Start: {}, end: {}",
 			start,
 			end
 		));

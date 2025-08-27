@@ -92,4 +92,17 @@ std::ostream& operator<<(std::ostream& stream, Phone value);
 
 std::istream& operator>>(std::istream& stream, Phone& value);
 
+template <>
+struct fmt::formatter<Phone> : fmt::formatter<std::string> {
+    template <typename FormatContext>
+    auto format(const Phone& value, FormatContext& ctx)
+	-> format_context::iterator
+	{
+        std::ostringstream oss;
+        oss << value;
+        return fmt::formatter<std::string>::format(oss.str(), ctx);
+    }
+};
+
+
 bool isVowel(Phone phone);

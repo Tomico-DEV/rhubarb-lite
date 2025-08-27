@@ -3,8 +3,9 @@
 #include "vorbis/codec.h"
 #include "vorbis/vorbisfile.h"
 #include "tools/tools.h"
-#include <format.h>
+#include <fmt/core.h>
 #include "tools/fileTools.h"
+#include <cassert>
 
 using std::filesystem::path;
 using std::vector;

@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <ostream>
+#include <fmt/core.h>
 
 using centiseconds = std::chrono::duration<int, std::centi>;
 
@@ -12,6 +13,16 @@ namespace std {
 	std::ostream& operator <<(std::ostream&, centiseconds cs);
 	
 }
+
+template <>
+struct fmt::formatter<centiseconds> : fmt::formatter<std::string> {
+    template <typename FormatContext>
+    auto format(const centiseconds& cs, FormatContext& ctx) {
+        std::ostringstream oss;
+        oss << cs;
+        return fmt::formatter<std::string>::format(oss.str(), ctx);
+    }
+};
 
 #pragma warning(push)
 #pragma warning(disable: 4455)

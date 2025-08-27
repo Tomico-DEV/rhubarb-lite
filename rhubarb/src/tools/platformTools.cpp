@@ -1,5 +1,5 @@
 #include <filesystem>
-#include <format.h>
+#include <format>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -59,18 +59,18 @@ path _getBinDirectory() {
 	// Perform sanity checks on bin directory
 	path testPath = binDirectory / "res" / "sphinx" / "cmudict-en-us.dict";
 	if (!std::filesystem::exists(testPath)) {
-		throw std::runtime_error(fmt::format(
+		throw std::runtime_error(std::format(
 			"Found Rhubarb executable at {}, but could not find resource file {}.",
-			binPath.u8string(),
-			testPath.u8string()
+			binPath.string(),
+			testPath.string()
 		));
 	}
 	try {
 		throwIfNotReadable(testPath);
 	} catch (...) {
-		throw std::runtime_error(fmt::format(
+		throw std::runtime_error(std::format(
 			"Cannot read resource file {}. Please check file permissions.",
-			testPath.u8string()
+			testPath.string()
 		));
 	}
 

@@ -196,6 +196,6 @@ lambda_unique_ptr<ngram_model_t> createLanguageModel(
 	auto deleteTempFile = gsl::finally([&]() { std::filesystem::remove(tempFilePath); });
 
 	return lambda_unique_ptr<ngram_model_t>(
-		ngram_model_read(decoder.config, tempFilePath.u8string().c_str(), NGRAM_ARPA, decoder.lmath),
+		ngram_model_read(decoder.config, tempFilePath.string().c_str(), NGRAM_ARPA, decoder.lmath),
 		[](ngram_model_t* lm) { ngram_model_free(lm); });
 }

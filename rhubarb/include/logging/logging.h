@@ -3,6 +3,8 @@
 #include "tools/EnumConverter.h"
 #include "Sink.h"
 #include "Level.h"
+#include <fmt/core.h>
+#include <sstream>
 
 #include <memory>
 
@@ -17,8 +19,8 @@ namespace logging {
 	void log(Level level, const std::string& message);
 
 	template<typename... Args>
-	void logFormat(Level level, fmt::CStringRef format, const Args&... args) {
-		log(level, fmt::format(format, args...));
+	void logFormat(Level level, std::string_view fmt_str, const Args&... args) {
+		log(level, fmt::vformat(fmt_str,  fmt::make_format_args(args...)));
 	}
 
 #define LOG_WITH_LEVEL(levelName, levelEnum) \
@@ -26,7 +28,7 @@ namespace logging {
 		log(Level::levelEnum, message); \
 	} \
 	template <typename... Args> \
-	void levelName ## Format(fmt::CStringRef format, const Args&... args) { \
+	void levelName ## Format(std::string_view format, const Args&... args) { \
 		logFormat(Level::levelEnum, format, args...); \
 	}
 

@@ -1,5 +1,5 @@
 #include "logging/formatters.h"
-#include <format.h>
+#include <fmt/core.h>
 #include "logging/Entry.h"
 #include "tools/tools.h"
 
@@ -8,7 +8,7 @@ using std::string;
 namespace logging {
 
 	string SimpleConsoleFormatter::format(const Entry& entry) {
-		return fmt::format("[{0}] {1}", entry.level, entry.message);
+		return fmt::format("[{}] {}", entry.level, entry.message);
 	}
 
 	string SimpleFileFormatter::format(const Entry& entry) {

@@ -27,3 +27,14 @@ namespace logging {
 	std::istream& operator >>(std::istream& stream, Level& value);
 
 }
+
+template <>
+struct fmt::formatter<logging::Level> : fmt::formatter<std::string> {
+	auto format(const logging::Level& lvl, format_context& ctx) const
+	-> format_context::iterator
+	{
+		std::ostringstream oss;
+		oss << lvl;
+		return fmt::formatter<std::string>::format(oss.str(), ctx);
+	}
+};

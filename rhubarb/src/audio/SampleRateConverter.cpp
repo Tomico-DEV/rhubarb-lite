@@ -1,7 +1,7 @@
 #include <cmath>
 #include "audio/SampleRateConverter.h"
 #include <stdexcept>
-#include <format.h>
+#include <fmt/core.h>
 
 using std::invalid_argument;
 using std::unique_ptr;

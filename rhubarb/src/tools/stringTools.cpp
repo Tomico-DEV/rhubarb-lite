@@ -3,7 +3,7 @@
 #include <utf8.h>
 #include <utf8proc.h>
 #include <regex>
-#include <format.h>
+#include <fmt/core.h>
 
 using std::string;
 using std::wstring;
@@ -178,7 +178,7 @@ string escapeJsonString(const string& s) {
 			{
 				const bool needsEscaping = c < '\x20' || c >= 0x80;
 				if (needsEscaping) {
-					result += fmt::format("\\u{0:04x}", c);
+					result += fmt::format("\\u{0:04x}", static_cast<uint32_t>(c));
 				} else {
 					result += static_cast<char>(c);
 				}
