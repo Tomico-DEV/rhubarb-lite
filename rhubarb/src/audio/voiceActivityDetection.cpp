@@ -3,7 +3,6 @@
 #include "audio/SampleRateConverter.h"
 #include "logging/logging.h"
 #include "tools/pairs.h"
-#include <boost/range/adaptor/transformed.hpp>
 #include <webrtc/common_audio/vad/include/webrtc_vad.h>
 #include "audio/processing.h"
 #include <gsl_util.h>
@@ -11,7 +10,6 @@
 #include <webrtc/common_audio/vad/vad_core.h>
 
 using std::vector;
-using boost::adaptors::transformed;
 using fmt::format;
 using std::runtime_error;
 using std::unique_ptr;

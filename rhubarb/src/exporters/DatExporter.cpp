@@ -1,6 +1,6 @@
 #include "exporters/DatExporter.h"
 #include "animation/targetShapeSet.h"
-#include <boost/lexical_cast.hpp>
+#include "tools/utils.h"
 
 using std::chrono::duration;
 using std::chrono::duration_cast;
@@ -67,7 +67,7 @@ void DatExporter::exportAnimation(const ExporterInput& input, std::ostream& outp
 string DatExporter::toString(Shape shape) const {
 	return convertToPrestonBlair
 		? prestonBlairShapeNames.at(shape)
-		: boost::lexical_cast<std::string>(shape);
+		: lexical_cast(shape);
 }
 
 int DatExporter::toFrameNumber(centiseconds time) const {
