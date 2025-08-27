@@ -3,7 +3,7 @@
 
 using namespace testing;
 using std::vector;
-using boost::optional;
+using std::optional;
 using std::initializer_list;
 
 TEST(ContinuousTimeline, constructors_initializeState) {
