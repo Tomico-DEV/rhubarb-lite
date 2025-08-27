@@ -138,26 +138,28 @@ TEST(Timeline, find) {
 }
 
 TEST(Timeline, get) {
-	Timed<int> a = Timed<int>(1_cs, 2_cs, 1);
-	Timed<int> b = Timed<int>(2_cs, 5_cs, 2);
-	Timed<int> c = Timed<int>(7_cs, 9_cs, 3);
-	Timeline<int> timeline { a, b, c };
+    Timed<int> a = Timed<int>(1_cs, 2_cs, 1);
+    Timed<int> b = Timed<int>(2_cs, 5_cs, 2);
+    Timed<int> c = Timed<int>(7_cs, 9_cs, 3);
+    Timeline<int> timeline { a, b, c };
 
-	initializer_list<Timed<int>*> expectedResults =
-		{ nullptr, &a, &b, &b, &b, nullptr, nullptr, &c, &c, nullptr, nullptr };
-	int i = -1;
-	for (Timed<int>* expectedResult : expectedResults) {
-		optional<const Timed<int>&> value = timeline.get(centiseconds(++i));
-		if (expectedResult != nullptr) {
-			EXPECT_TRUE(value) << "i: " << i;
-			if (value) {
-				EXPECT_EQ(*expectedResult, *value) << "i: " << i;
-			}
-		} else {
-			EXPECT_FALSE(value) << "i: " << i;
-		}
-	}
+    std::initializer_list<Timed<int>*> expectedResults =
+        { nullptr, &a, &b, &b, &b, nullptr, nullptr, &c, &c, nullptr, nullptr };
+
+    int i = -1;
+    for (Timed<int>* expectedResult : expectedResults) {
+        OptionalRef<const Timed<int>> value = timeline.get(centiseconds(++i));
+        if (expectedResult != nullptr) {
+            EXPECT_TRUE(value.has_value()) << "i: " << i;
+            if (value.has_value()) {
+                EXPECT_EQ(*expectedResult, *value) << "i: " << i;
+            }
+        } else {
+            EXPECT_FALSE(value.has_value()) << "i: " << i;
+        }
+    }
 }
+
 
 TEST(Timeline, clear) {
 	const Timeline<int> original { { 1_cs, 2_cs, 1 }, { 2_cs, 5_cs, 2 }, { 7_cs, 9_cs, 3 } };

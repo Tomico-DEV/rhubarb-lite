@@ -417,7 +417,6 @@ add_library(rhubarb-tools
 	src/tools/TablePrinter.cpp
 	src/tools/textFiles.cpp
 	src/tools/tools.cpp
-	src/tools/utils.cpp
 )
 target_include_directories(rhubarb-tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(rhubarb-tools
