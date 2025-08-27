@@ -2,8 +2,7 @@
 #include "Timed.h"
 #include <set>
 #include <optional>
-#include <boost/optional.hpp>
-#include <functional>  // std::reference_wrapper
+#include <functional>
 #include <type_traits>
 #include "tools/tools.h"
 
@@ -29,7 +28,6 @@ namespace internal {
 }
 
 // A small wrapper to emulate boost::optional<T&>
-// will be removed once boost::optional related things are completely eliminated
 template <typename T>
 class OptionalRef {
 public:
@@ -110,13 +108,6 @@ public:
                 timeline.clear(time, time + time_type(1));
             }
             return *this;
-        }
-
-        // optional boost conversion for tests that still use boost::optional
-        operator boost::optional<T>() const {
-            auto optional = timeline.get(time);
-            return optional ? boost::make_optional(optional->getValue())
-                            : boost::none;
         }
 
     private:

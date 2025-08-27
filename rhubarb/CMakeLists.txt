@@ -54,22 +54,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Define libraries
 
-# ... Boost
-cmake_policy(SET CMP0167 OLD)  # Use the legacy Boost CMake integration
-find_package(Boost 1.54 REQUIRED)
-include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
-link_libraries(Boost::headers) # Just about every project needs Boost, but just the headers
-
-# ... C++ Format
-# FILE(GLOB cppFormatFiles "lib/cppformat/*.cc")
-# add_library(cppFormat ${cppFormatFiles})
-#target_include_directories(cppFormat SYSTEM PUBLIC "lib/cppformat")
-# use c++17
-# target_compile_options(cppFormat PRIVATE ${disableWarningsFlags})
-# target_compile_features(cppFormat PUBLIC cxx_std_17)
-# set_target_properties(cppFormat PROPERTIES FOLDER lib)
-
-# fmt
+# ... fmt
 find_package(fmt 9 REQUIRED)
 
 # ... sphinxbase
@@ -96,17 +81,13 @@ target_compile_options(pocketSphinx PRIVATE ${disableWarningsFlags})
 target_compile_definitions(pocketSphinx PUBLIC __POCKETSPHINX_EXPORT_H__=1 POCKETSPHINX_EXPORT=) # Compile as static lib
 set_target_properties(pocketSphinx PROPERTIES FOLDER lib)
 
-# ... TCLAP
-# include_directories(SYSTEM "lib/tclap-1.2.1/include")
-
-# ... CLI11, replacing TCLAP
+# ... CLI11
 FetchContent_Declare(
   CLI11
   GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
   GIT_TAG v2.5.0  
 )
 FetchContent_MakeAvailable(CLI11)
-
 
 # ... Google Test
 set(INSTALL_GTEST OFF) # Prevent library files from ending up in our artifacts

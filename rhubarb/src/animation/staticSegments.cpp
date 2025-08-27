@@ -1,4 +1,5 @@
 #include "animation/staticSegments.h"
+#include <cassert>
 #include <vector>
 #include <numeric>
 #include "tools/nextCombination.h"

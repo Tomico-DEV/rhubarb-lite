@@ -1,9 +1,7 @@
 #include <iostream>
 #include <fmt/core.h>
-//#include <tclap/CmdLine.h>
 #include <CLI/CLI.hpp>
 #include "core/appInfo.h"
-// #include "tools/NiceCmdLineOutput.h"
 #include "logging/logging.h"
 #include "logging/sinks.h"
 #include "logging/formatters.h"
@@ -133,26 +131,9 @@ int main(int platformArgc, char* platformArgv[]) {
 	const vector<string> args = argsToUtf8(platformArgc, platformArgv);
 
 	// Define command-line parameters
-	// const char argumentValueSeparator = ' ';
-	//tclap::CmdLine cmd(appName, argumentValueSeparator, appVersion);
-	//cmd.setExceptionHandling(false);
-	//cmd.setOutput(new NiceCmdLineOutput());
 	CLI::App app {appName, "placeholder"};
 	app.set_version_flag("--version", appVersion);
 
-	/*
-	tclap::ValueArg<string> outputFileName(
-		"o", "output", "The output file path.",
-		false, string(), "string", cmd
-	);
-
-	auto logLevels = vector<logging::Level>(logging::LevelConverter::get().getValues());
-	tclap::ValuesConstraint<logging::Level> logLevelConstraint(logLevels);
-	tclap::ValueArg<logging::Level> logLevel(
-		"", "logLevel", "The minimum log level that will be written to the log file",
-		false, logging::Level::Debug, &logLevelConstraint, cmd
-	);
-	*/
 	std::string outputFileName;
 	auto* outputFileOpt = app.add_option("-o,--output", outputFileName, "The output file path.");
 	
@@ -163,17 +144,6 @@ int main(int platformArgc, char* platformArgv[]) {
 	->check(CLI::IsMember(vec2strvec<logging::Level>(logLevels)))
 	->description("Allowed modes: " + vec2str<logging::Level>(logLevels));
 	
-	/*
-	tclap::ValueArg<string> logFileName(
-		"", "logFile", "The log file path.",
-		false, string(), "string", cmd
-		);
-	tclap::ValueArg<logging::Level> consoleLevel(
-	"", "consoleLevel", "The minimum log level that will be printed on the console (stderr)",
-	false, defaultMinStderrLevel, &logLevelConstraint, cmd
-	);
-	*/
-
 	std::string logFileName;
 	auto* logFileOpt = app.add_option("--logFile", logFileName, "The log file path.");
 	
@@ -182,26 +152,12 @@ int main(int platformArgc, char* platformArgv[]) {
 		"--consoleLevel", consoleLevel, 
 		"The minimum log level that will be printed on the console (stderr)"
 	);
-
-	/*
-	tclap::SwitchArg machineReadableMode(
-		"", "machineReadable", "Formats all output to stderr in a structured JSON format.",
-		cmd, false
-	);
-	*/
 	
 	bool machineReadableMode = false;
 	app.add_flag(
 		"--machineReadable", machineReadableMode,
 		"Formats all output to stderr in a structured JSON format."
 	);
-	
-	/*
-	tclap::SwitchArg quietMode(
-		"q", "quiet", "Suppresses all output to stderr except for warnings and error messages.",
-		cmd, false
-	);
-	*/
 
 	bool quietMode = false;
 	app.add_flag(
@@ -209,71 +165,36 @@ int main(int platformArgc, char* platformArgv[]) {
 		"Suppresses all output to stderr except for warnings and error messages."
 	);
 
-	/*
-	tclap::ValueArg<int> maxThreadCount(
-		"", "threads", "The maximum number of worker threads to use.",
-		false, getProcessorCoreCount(), "number", cmd
-	);
-	*/
-
 	int maxThreadCount = getProcessorCoreCount();
 	app.add_option(
 		"--threads", maxThreadCount,
 		"The maximum number of worker threads to use."
 	);
 
-	/*
-	tclap::ValueArg<string> extendedShapes(
-		"", "extendedShapes", "All extended, optional shapes to use.",
-		false, "GHX", "string", cmd
-	);
-	*/
 	std::string extendedShapes { "GHX" };
 	app.add_option(
 		"--extendedShapes", extendedShapes,
 		"All extended, optional shapes to use."
 	);
-	/*
-	tclap::ValueArg<string> dialogFile(
-		"d", "dialogFile", "A file containing the text of the dialog.",
-		false, string(), "string", cmd
-	);
-	*/
+	
 	std::string dialogFile;
 	auto* dialogOpt = app.add_option(
 		"-d,--dialogFile", dialogFile,
 		"A file containing the text of the dialog."
 	);
-	/*
-	tclap::SwitchArg datUsePrestonBlair(
-		"", "datUsePrestonBlair", "Only for dat exporter: uses the Preston Blair mouth shape names.",
-		cmd, false
-	);
-	*/
+	
 	bool datUsePrestonBlair = false;
 	app.add_option(
 		"--datUsePrestonBlair", datUsePrestonBlair,
 		"Only for dat exporter: uses the Preston Blair mouth shape names."
 	);
-	/*
-	tclap::ValueArg<double> datFrameRate(
-		"", "datFrameRate", "Only for dat exporter: the desired frame rate.",
-		false, 24.0, "number", cmd
-	);
-	*/
+	
 	double datFrameRate = 24.0;
 	app.add_option(
 		"--datFrameRate", datFrameRate,
 		"Only for dat exporter: the desired frame rate."
 	);
-	/*
-	auto exportFormats = vector<ExportFormat>(ExportFormatConverter::get().getValues());
-	tclap::ValuesConstraint<ExportFormat> exportFormatConstraint(exportFormats);
-	tclap::ValueArg<ExportFormat> exportFormat(
-		"f", "exportFormat", "The export format.",
-		false, ExportFormat::Tsv, &exportFormatConstraint, cmd
-	);
-	*/
+	
 	std::string exportFormatStr { "tsv" };
 	auto exportFormats = vector<ExportFormat>( ExportFormatConverter::get().getValues() );
 
@@ -281,15 +202,6 @@ int main(int platformArgc, char* platformArgv[]) {
 	->check(CLI::IsMember(vec2strvec<ExportFormat>(exportFormats)))
 	->description("Allowed modes: " + vec2str<ExportFormat>(exportFormats));
 
-	
-	/*
-	auto recognizerTypes = vector<RecognizerType>(RecognizerTypeConverter::get().getValues());
-	tclap::ValuesConstraint<RecognizerType> recognizerConstraint(recognizerTypes);
-	tclap::ValueArg<RecognizerType> recognizerType(
-		"r", "recognizer", "The dialog recognizer.",
-		false, RecognizerType::PocketSphinx, &recognizerConstraint, cmd
-	);
-	*/
 	std::string recognizerTypeStr { "pocketSphinx" };
 	auto recognizerTypes = RecognizerTypeConverter::get().getValues();
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "tools/EnumConverter.h"
+#include <sstream>
 
 enum class ExportFormat {
 	Dat,
@@ -20,3 +21,14 @@ protected:
 std::ostream& operator<<(std::ostream& stream, ExportFormat value);
 
 std::istream& operator>>(std::istream& stream, ExportFormat& value);
+
+template <>
+struct fmt::formatter<ExportFormat> : fmt::formatter<std::string> {
+	inline auto format(const ExportFormat& value, format_context& ctx) const
+	-> format_context::iterator
+	{
+		std::ostringstream oss;
+		oss << value;
+		return fmt::formatter<std::string>::format(oss.str(), ctx);
+	}
+};

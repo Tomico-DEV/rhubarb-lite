@@ -1,11 +1,11 @@
 #pragma once
 
-#include "core/Shape.h"
-#include "time/ContinuousTimeline.h"
 #include "audio/AudioClip.h"
-#include "tools/progress.h"
-#include <filesystem>
 #include "animation/targetShapeSet.h"
+#include "core/Shape.h"
+#include <filesystem>
+#include "time/ContinuousTimeline.h"
+#include "tools/progress.h"
 #include "recognition/Recognizer.h"
 
 JoiningContinuousTimeline<Shape> animateAudioClip(

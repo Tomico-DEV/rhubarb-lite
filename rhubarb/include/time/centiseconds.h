@@ -25,9 +25,13 @@ struct fmt::formatter<centiseconds> : fmt::formatter<std::string> {
     }
 };
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 4455)
+#endif
 inline constexpr centiseconds operator "" _cs(unsigned long long cs) {
 	return centiseconds(cs);
 }
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif

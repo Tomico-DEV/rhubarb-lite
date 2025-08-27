@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Sink.h"
-#include <memory>
 #include "Formatter.h"
+#include <memory>
+#include "Sink.h"
 
 namespace logging {
 	enum class Level;
