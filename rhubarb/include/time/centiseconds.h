@@ -14,20 +14,6 @@ namespace std {
 	
 }
 
-template <>
-struct std::formatter<centiseconds> : std::formatter<std::string> {
-	constexpr auto parse(std::format_parse_context& ctx) {
-        return std::formatter<std::string>::parse(ctx);
-    }
-	
-	template <typename FormatContext>
-    inline auto format(const centiseconds& cs, FormatContext& ctx) const {
-        std::ostringstream oss;
-        oss << cs;
-        return std::formatter<std::string>::format(oss.str(), ctx);
-    }
-};
-
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 4455)

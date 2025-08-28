@@ -107,5 +107,4 @@ struct std::formatter<Phone> : std::formatter<std::string> {
     }
 };
 
-
 bool isVowel(Phone phone);
